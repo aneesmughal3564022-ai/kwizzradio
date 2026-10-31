@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kwizz_radio_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - APP_URL=http://localhost:3000
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/kwizz_radio?schema=public
+      - REDIS_URL=redis://cache:6379
+      - SESSION_SECRET=production_secret_key_needs_replacement_in_prod!
+      - CSRF_SECRET=csrf_secret_random_hash_key_min_32_characters_long!
+      - COOKIE_SECURE=false
+      - DEFAULT_STREAM_URL=https://streaming.live365.com/b72076_128k.mp3
+      - LIVE365_STATION_ID=a72076
+      - STATION_TIMEZONE=America/Toronto
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+    networks:
+      - kwizz_net
+
+  db:
+    image: postgres:16-alpine
+    container_name: kwizz_radio_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: kwizz_radio
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d kwizz_radio"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - kwizz_net
+
+  cache:
+    image: redis:7-alpine
+    container_name: kwizz_radio_cache
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - kwizz_net
+
+networks:
+  kwizz_net:
+    driver: bridge
+
+volumes:
+  pgdata:
+  redisdata:
+

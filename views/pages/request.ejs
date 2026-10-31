@@ -1,0 +1,123 @@
+<!-- KWIZZ Radio Song Request Page -->
+<div class="space-y-8 max-w-2xl mx-auto">
+  <div class="text-center space-y-2 border-b border-zinc-800/80 pb-6">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-gold text-xs font-semibold">
+      <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+      <span>DIRECT TO DJ INBOX</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-black text-white" style="color: var(--text-primary);">
+      Request a Song
+    </h1>
+    <p class="text-zinc-400 text-sm">
+      Got a reggae anthem, lovers rock classic, or dancehall banger you want to hear? Tell us below.
+    </p>
+  </div>
+
+  <form id="song-request-form" class="space-y-5 kwizz-card p-6 sm:p-8 shadow-xl" style="background-color: var(--bg-card);" novalidate>
+    <!-- Spam Protection Honeypot Field (Hidden from real users and screen readers) -->
+    <div class="hidden" aria-hidden="true">
+      <label for="hp_website">Leave this field blank</label>
+      <input type="text" id="hp_website" name="hp_website" tabindex="-1" autocomplete="off">
+    </div>
+
+    <!-- Hidden Timestamp Field (For anti-bot rapid submission check) -->
+    <input type="hidden" id="req_rendered_at" name="rendered_at" value="">
+
+    <!-- Artist Name -->
+    <div>
+      <label for="req-artist" class="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-2">
+        Artist Name <span class="text-rose-500">*</span>
+      </label>
+      <input 
+        type="text" 
+        id="req-artist" 
+        name="artist" 
+        required 
+        placeholder="e.g. Beres Hammond, Chronixx, Koffee"
+        class="w-full px-4 py-3 rounded-xl kwizz-input text-white placeholder-zinc-500 text-sm">
+    </div>
+
+    <!-- Song Title -->
+    <div>
+      <label for="req-title" class="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-2">
+        Song Title <span class="text-rose-500">*</span>
+      </label>
+      <input 
+        type="text" 
+        id="req-title" 
+        name="songTitle" 
+        required 
+        placeholder="e.g. Rockaway, Toast, Jamrock"
+        class="w-full px-4 py-3 rounded-xl kwizz-input text-white placeholder-zinc-500 text-sm">
+    </div>
+
+    <!-- Requester Name -->
+    <div>
+      <label for="req-name" class="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-2">
+        Your Name / Handle <span class="text-rose-500">*</span>
+      </label>
+      <input 
+        type="text" 
+        id="req-name" 
+        name="requestedBy" 
+        required 
+        placeholder="e.g. Ras Dave from Ottawa West"
+        class="w-full px-4 py-3 rounded-xl kwizz-input text-white placeholder-zinc-500 text-sm">
+    </div>
+
+    <!-- Dedication / Shoutout -->
+    <div>
+      <label for="req-dedication" class="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-2">
+        Dedication / Shoutout <span class="text-zinc-500 font-normal">(Optional)</span>
+      </label>
+      <textarea 
+        id="req-dedication" 
+        name="dedication" 
+        rows="2" 
+        placeholder="Shoutout to the crew celebrating this weekend in Ottawa..."
+        class="w-full px-4 py-3 rounded-xl kwizz-input text-white placeholder-zinc-500 text-sm resize-none"></textarea>
+    </div>
+
+    <!-- Email Address -->
+    <div>
+      <label for="req-email" class="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-2">
+        Your Email <span class="text-zinc-500 font-normal">(Optional, if you'd like a notification)</span>
+      </label>
+      <input 
+        type="email" 
+        id="req-email" 
+        name="email" 
+        placeholder="you@example.com"
+        class="w-full px-4 py-3 rounded-xl kwizz-input text-white placeholder-zinc-500 text-sm">
+    </div>
+
+    <!-- CASL Consent Checkbox -->
+    <div class="flex items-start gap-3 pt-2">
+      <input 
+        type="checkbox" 
+        id="req-consent" 
+        name="newsletterConsent" 
+        class="mt-1 w-4 h-4 rounded border-zinc-700 text-amber-500 focus:ring-amber-400 bg-zinc-900">
+      <label for="req-consent" class="text-xs text-zinc-400 leading-relaxed cursor-pointer">
+        (Optional) Send me occasional updates on KWIZZ Radio events and special shows. (CASL compliant, unsubscribe anytime).
+      </label>
+    </div>
+
+    <!-- Toast Notification Message Container -->
+    <div id="request-feedback" class="hidden p-4 rounded-xl text-xs font-semibold"></div>
+
+    <!-- Submit Button -->
+    <button 
+      type="submit" 
+      id="request-submit-btn" 
+      class="w-full py-3.5 rounded-xl btn-primary-gold text-sm uppercase tracking-wider flex items-center justify-center gap-2">
+      <span class="btn-text">Send Song Request</span>
+      <span class="btn-spinner hidden">
+        <svg class="w-5 h-5 animate-spin text-black" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+      </span>
+    </button>
+  </form>
+</div>
+
+<script src="/js/forms.js"></script>
+

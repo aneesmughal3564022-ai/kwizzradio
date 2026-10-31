@@ -1,0 +1,75 @@
+<div class="space-y-8">
+  <div class="flex items-center justify-between border-b border-zinc-800 pb-4">
+    <div>
+      <h1 class="text-2xl font-black text-white">Station Announcements Banner</h1>
+      <p class="text-xs text-zinc-400">Broadcast live alerts, festival appearances, and special programming notices.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div class="lg:col-span-5 bg-zinc-950 border border-zinc-800 p-6 rounded-3xl space-y-4">
+      <h3 class="text-base font-bold text-white">Publish New Announcement</h3>
+      
+      <form action="/admin/announcements/create" method="POST" class="space-y-4 text-xs">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        <div>
+          <label class="block font-bold uppercase text-zinc-400 mb-1">Headline</label>
+          <input type="text" name="title" required placeholder="e.g. Live Broadcast from Lebreton Flats" class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+        </div>
+
+        <div>
+          <label class="block font-bold uppercase text-zinc-400 mb-1">Message</label>
+          <textarea name="message" rows="3" required placeholder="Announcement message displayed to all listeners..." class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white resize-none"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold uppercase text-zinc-400 mb-1">Button Text</label>
+            <input type="text" name="linkText" placeholder="View Details" class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+          </div>
+          <div>
+            <label class="block font-bold uppercase text-zinc-400 mb-1">Link URL</label>
+            <input type="text" name="linkUrl" placeholder="/events" class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-2">
+          <input type="checkbox" name="isActive" id="ann-active" checked class="w-4 h-4 rounded bg-zinc-900 text-amber-500 focus:ring-amber-400">
+          <label for="ann-active" class="font-bold text-white cursor-pointer">Activate Banner Immediately</label>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl btn-primary-gold uppercase tracking-wider">
+          Publish Announcement
+        </button>
+      </form>
+    </div>
+
+    <div class="lg:col-span-7 bg-zinc-950 border border-zinc-800 p-6 rounded-3xl space-y-4">
+      <h3 class="text-base font-bold text-white">Current Announcements</h3>
+      <div class="space-y-3">
+        <% if (announcements && announcements.length > 0) { %>
+          <% announcements.forEach(ann => { %>
+            <div class="p-4 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-white"><%= ann.title %></span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase <%= ann.isActive ? 'bg-emerald-950 text-emerald-400' : 'bg-zinc-800 text-zinc-500' %>">
+                  <%= ann.isActive ? 'Active' : 'Inactive' %>
+                </span>
+              </div>
+              <p class="text-xs text-zinc-400 leading-relaxed"><%= ann.message %></p>
+              <% if (ann.linkUrl) { %>
+                <a href="<%= ann.linkUrl %>" target="_blank" class="text-[11px] font-bold text-amber-400 underline">
+                  <%= ann.linkText || 'Link' %> &rarr;
+                </a>
+              <% } %>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <div class="p-4 text-center text-zinc-500 text-xs">No announcements recorded.</div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+

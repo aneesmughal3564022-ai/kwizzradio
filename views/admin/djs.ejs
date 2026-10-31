@@ -1,0 +1,89 @@
+<div class="space-y-8">
+  <div class="flex items-center justify-between border-b border-zinc-800 pb-4">
+    <div>
+      <h1 class="text-2xl font-black text-white">Manage DJs &amp; Presenters</h1>
+      <p class="text-xs text-zinc-400">Maintain the station DJ roster, biographies, and social links.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <!-- Add DJ Form -->
+    <div class="lg:col-span-5 bg-zinc-950 border border-zinc-800 p-6 rounded-3xl space-y-4">
+      <h3 class="text-base font-bold text-white">Add New DJ</h3>
+      
+      <form action="/admin/djs/create" method="POST" class="space-y-4 text-xs">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        <div>
+          <label class="block font-bold uppercase text-zinc-400 mb-1">DJ / Selector Name</label>
+          <input type="text" name="name" required placeholder="e.g. Ras King David" class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+        </div>
+
+        <div>
+          <label class="block font-bold uppercase text-zinc-400 mb-1">Biography</label>
+          <textarea name="bio" rows="3" required placeholder="Selector biography and background..." class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white resize-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-bold uppercase text-zinc-400 mb-1">Photo URL</label>
+          <input type="text" name="photoUrl" placeholder="/images/djs/example.jpg" class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold uppercase text-zinc-400 mb-1">Instagram URL</label>
+            <input type="url" name="socialInstagram" placeholder="https://instagram.com/..." class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+          </div>
+          <div>
+            <label class="block font-bold uppercase text-zinc-400 mb-1">Twitter / X URL</label>
+            <input type="url" name="socialTwitter" placeholder="https://x.com/..." class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl btn-primary-gold uppercase tracking-wider">
+          Add DJ to Roster
+        </button>
+      </form>
+    </div>
+
+    <!-- DJs List -->
+    <div class="lg:col-span-7 bg-zinc-950 border border-zinc-800 p-6 rounded-3xl space-y-4">
+      <h3 class="text-base font-bold text-white">Active DJs</h3>
+      
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="border-b border-zinc-800 text-zinc-500 font-bold uppercase">
+            <tr>
+              <th class="py-2">Name</th>
+              <th class="py-2">Slug</th>
+              <th class="py-2">Bio Preview</th>
+              <th class="py-2 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-zinc-900">
+            <% if (djs && djs.length > 0) { %>
+              <% djs.forEach(dj => { %>
+                <tr class="hover:bg-zinc-900/40">
+                  <td class="py-2.5 font-bold text-white"><%= dj.name %></td>
+                  <td class="py-2.5 text-zinc-400 font-mono"><%= dj.slug %></td>
+                  <td class="py-2.5 text-zinc-400 truncate max-w-[180px]"><%= dj.bio %></td>
+                  <td class="py-2.5 text-right">
+                    <% if (user.role === 'ADMIN') { %>
+                      <form action="/admin/djs/<%= dj.id %>/delete" method="POST" class="inline" onsubmit="return confirm('Remove DJ?');">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="px-2 py-1 rounded bg-red-950 text-red-400 hover:bg-red-900 font-bold text-[10px]">Delete</button>
+                      </form>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr><td colspan="4" class="py-4 text-center text-zinc-500">No DJs in roster.</td></tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

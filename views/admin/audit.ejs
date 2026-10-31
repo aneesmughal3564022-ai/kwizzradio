@@ -1,0 +1,42 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between border-b border-zinc-800 pb-4">
+    <div>
+      <h1 class="text-2xl font-black text-white">Administrative Audit Log</h1>
+      <p class="text-xs text-zinc-400">Complete, tamper-evident record of all staff and management actions.</p>
+    </div>
+  </div>
+
+  <div class="bg-zinc-950 border border-zinc-800 rounded-3xl p-6 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs">
+        <thead class="border-b border-zinc-800 text-zinc-500 font-bold uppercase">
+          <tr>
+            <th class="py-3">Timestamp</th>
+            <th class="py-3">Action</th>
+            <th class="py-3">Target</th>
+            <th class="py-3">Target ID</th>
+            <th class="py-3">IP Address</th>
+            <th class="py-3">Details</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-zinc-900 font-mono">
+          <% if (logs && logs.length > 0) { %>
+            <% logs.forEach(log => { %>
+              <tr class="hover:bg-zinc-900/40">
+                <td class="py-3 text-zinc-500 whitespace-nowrap font-sans"><%= new Date(log.createdAt).toLocaleString() %></td>
+                <td class="py-3 font-bold text-amber-400"><%= log.action %></td>
+                <td class="py-3 text-white"><%= log.targetType %></td>
+                <td class="py-3 text-zinc-400"><%= log.targetId || '-' %></td>
+                <td class="py-3 text-zinc-500"><%= log.ipAddress || 'internal' %></td>
+                <td class="py-3 text-zinc-400 max-w-xs truncate font-sans"><%= log.details || '-' %></td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr><td colspan="6" class="py-8 text-center text-zinc-500 font-sans">No audit events recorded yet.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

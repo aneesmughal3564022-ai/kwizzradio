@@ -1,0 +1,60 @@
+<!-- KWIZZ Radio Events & Live Broadcasts -->
+<div class="space-y-8 max-w-5xl mx-auto">
+  <div class="border-b border-zinc-800/80 pb-6">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-emerald text-xs font-semibold mb-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <span>COMMUNITY &amp; LIVE BROADCASTS</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-black text-white" style="color: var(--text-primary);">
+      Events &amp; Appearances
+    </h1>
+    <p class="text-zinc-400 text-sm mt-1">
+      Catch KWIZZ Radio live on location around Ottawa and support local Caribbean culture.
+    </p>
+  </div>
+
+  <div class="space-y-6">
+    <% if (typeof events !== 'undefined' && events.length > 0) { %>
+      <% events.forEach(event => { %>
+        <article class="p-6 sm:p-8 kwizz-card flex flex-col md:flex-row items-start justify-between gap-6" style="background-color: var(--bg-card);">
+          <div class="space-y-3 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-400 text-black">
+                Station Partner Event
+              </span>
+              <span class="text-xs text-zinc-400 font-medium">
+                <%= new Date(event.eventDate).toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' }) %>
+              </span>
+            </div>
+
+            <h2 class="text-2xl font-black text-white" style="color: var(--text-primary);">
+              <%= event.title %>
+            </h2>
+
+            <div class="flex items-center gap-2 text-xs text-amber-400 font-semibold">
+              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span><%= event.location %></span>
+            </div>
+
+            <p class="text-sm text-zinc-300 leading-relaxed max-w-2xl">
+              <%= event.description %>
+            </p>
+          </div>
+
+          <div class="shrink-0 self-start md:self-center">
+            <% if (event.ticketUrl) { %>
+              <a href="<%= event.ticketUrl %>" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl btn-primary-gold text-xs uppercase tracking-wider shadow-lg inline-block">
+                Tickets &amp; Info &rarr;
+              </a>
+            <% } %>
+          </div>
+        </article>
+      <% }); %>
+    <% } else { %>
+      <div class="p-8 text-center text-zinc-500">
+        No upcoming events announced at the moment. Stay tuned to the stream!
+      </div>
+    <% } %>
+  </div>
+</div>
+

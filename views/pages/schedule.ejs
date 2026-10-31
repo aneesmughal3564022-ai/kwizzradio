@@ -1,0 +1,97 @@
+<!-- KWIZZ Radio Weekly Schedule View -->
+<div class="space-y-8 max-w-6xl mx-auto">
+  
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-800/80 pb-6">
+    <div>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-gold text-xs font-semibold mb-2">
+        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+        <span>7-DAY BROADCAST GUIDE</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-black text-white" style="color: var(--text-primary);">
+        Weekly Schedule
+      </h1>
+      <p class="text-zinc-400 text-sm mt-1">
+        Never miss your favorite selector. Shows are broadcasted live from Ottawa, Canada.
+      </p>
+    </div>
+
+    <!-- Timezone Switcher & Local Time Indicator -->
+    <div class="flex items-center gap-3 bg-zinc-900/90 border border-zinc-800 rounded-2xl p-2.5 text-xs">
+      <div class="flex items-center gap-1.5 text-zinc-300">
+        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="font-bold">Viewing Time:</span>
+      </div>
+      <select id="schedule-tz-select" class="bg-black text-amber-400 border border-zinc-700/80 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-amber-400 cursor-pointer">
+        <option value="local" selected>Your Local Time (Auto-detected)</option>
+        <option value="America/Toronto">Ottawa Time (Eastern Time)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Day Tabs Navigation (0: Sun to 6: Sat) -->
+  <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="schedule-day-tabs">
+    <% const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']; %>
+    <% const todayIndex = new Date().getDay(); %>
+    <% dayNames.forEach((name, idx) => { %>
+      <button 
+        type="button" 
+        data-day="<%= idx %>" 
+        class="day-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all <%= idx === todayIndex ? 'day-tab-active' : 'day-tab-inactive' %>">
+        <%= name %> <%= idx === todayIndex ? '(Today)' : '' %>
+      </button>
+    <% }); %>
+  </div>
+
+  <!-- Schedule Slot Cards Container -->
+  <div id="schedule-slots-container" class="space-y-4">
+    <% if (typeof slots !== 'undefined' && slots.length > 0) { %>
+      <% slots.forEach(slot => { %>
+        <div 
+          class="schedule-slot-card kwizz-card p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+          data-day="<%= slot.dayOfWeek %>"
+          data-start="<%= slot.startTime %>"
+          data-end="<%= slot.endTime %>"
+          data-tz="<%= slot.timezone || 'America/Toronto' %>"
+          style="<%= slot.dayOfWeek === todayIndex ? '' : 'display: none;' %>">
+          
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-xl bg-zinc-900 border border-zinc-800/80 overflow-hidden shrink-0">
+              <img src="<%= slot.dj?.photoUrl || '/images/fallback-album.svg' %>" alt="<%= slot.show?.title %>" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-zinc-900 border border-zinc-800 text-amber-400">
+                  <%= slot.show?.genre || 'Reggae' %>
+                </span>
+              </div>
+              <h3 class="text-base font-extrabold text-white" style="color: var(--text-primary);">
+                <%= slot.show?.title %>
+              </h3>
+              <p class="text-xs text-zinc-400">
+                Hosted by <span class="text-zinc-200 font-semibold"><%= slot.dj?.name || 'KWIZZ Selector' %></span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Time Display (Dynamic Local & Ottawa ET) -->
+          <div class="text-left sm:text-right shrink-0">
+            <div class="slot-time-display text-sm font-black text-amber-400">
+              <%= slot.startTime %> - <%= slot.endTime %>
+            </div>
+            <div class="slot-tz-label text-[10px] text-zinc-500 font-medium">
+              Ottawa Time (ET)
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div class="p-8 text-center text-zinc-500">
+        No schedule slots configured yet.
+      </div>
+    <% } %>
+  </div>
+
+</div>
+
+<script src="/js/schedule.js"></script>
+

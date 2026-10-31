@@ -1,0 +1,57 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between border-b border-zinc-800 pb-4">
+    <div>
+      <h1 class="text-2xl font-black text-white">Song Requests Inbox</h1>
+      <p class="text-xs text-zinc-400">Review incoming requests from listeners and update on-air statuses.</p>
+    </div>
+  </div>
+
+  <div class="bg-zinc-950 border border-zinc-800 rounded-3xl p-6 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs">
+        <thead class="border-b border-zinc-800 text-zinc-500 font-bold uppercase">
+          <tr>
+            <th class="py-3">Date</th>
+            <th class="py-3">Track &amp; Artist</th>
+            <th class="py-3">Requester</th>
+            <th class="py-3">Dedication / Message</th>
+            <th class="py-3">Status</th>
+            <th class="py-3 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-zinc-900">
+          <% if (requests && requests.length > 0) { %>
+            <% requests.forEach(r => { %>
+              <tr class="hover:bg-zinc-900/40">
+                <td class="py-3 text-zinc-500 whitespace-nowrap"><%= new Date(r.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %></td>
+                <td class="py-3 font-bold text-white"><%= r.songTitle %> - <span class="text-zinc-400 font-normal"><%= r.artist %></span></td>
+                <td class="py-3 text-zinc-300"><%= r.requestedBy %></td>
+                <td class="py-3 text-zinc-400 max-w-xs truncate"><%= r.dedication || '-' %></td>
+                <td class="py-3">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase <%= r.status === 'PLAYED' ? 'bg-emerald-950 text-emerald-400' : (r.status === 'REJECTED' ? 'bg-rose-950 text-rose-400' : 'bg-amber-950 text-amber-400') %>">
+                    <%= r.status %>
+                  </span>
+                </td>
+                <td class="py-3 text-right space-x-1 whitespace-nowrap">
+                  <form action="/admin/requests/<%= r.id %>/status" method="POST" class="inline">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="status" value="PLAYED">
+                    <button type="submit" class="px-2.5 py-1 rounded bg-zinc-900 hover:bg-zinc-800 text-emerald-400 font-bold text-[10px]">Mark Played</button>
+                  </form>
+                  <form action="/admin/requests/<%= r.id %>/status" method="POST" class="inline">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="status" value="REJECTED">
+                    <button type="submit" class="px-2.5 py-1 rounded bg-zinc-900 hover:bg-zinc-800 text-rose-400 font-bold text-[10px]">Reject</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr><td colspan="6" class="py-8 text-center text-zinc-500">No song requests in database.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

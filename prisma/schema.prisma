@@ -1,0 +1,239 @@
+// Prisma schema for KWIZZ Radio (Ottawa, Canada)
+// All 13 models matching PRD Section 7.3 specifications
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  DJ
+}
+
+enum RequestStatus {
+  NEW
+  PLAYED
+  REJECTED
+}
+
+enum ContactStatus {
+  NEW
+  REPLIED
+  ARCHIVED
+}
+
+enum SponsorPlacement {
+  HEADER
+  SIDEBAR
+  FOOTER
+  SPONSOR_PAGE
+}
+
+model User {
+  id                String     @id @default(uuid())
+  email             String     @unique
+  passwordHash      String
+  name              String
+  role              Role       @default(DJ)
+  twoFactorSecret   String?
+  twoFactorEnabled  Boolean    @default(false)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  auditLogs         AuditLog[]
+
+  @@map("users")
+}
+
+model DJ {
+  id              String         @id @default(uuid())
+  name            String
+  slug            String         @unique
+  bio             String         @db.Text
+  photoUrl        String?
+  socialTwitter   String?
+  socialInstagram String?
+  socialFacebook  String?
+  active          Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  shows           Show[]
+  scheduleSlots   ScheduleSlot[]
+
+  @@map("djs")
+}
+
+model Show {
+  id            String         @id @default(uuid())
+  title         String
+  slug          String         @unique
+  description   String         @db.Text
+  genre         String         @default("Reggae / Dancehall")
+  bannerUrl     String?
+  active        Boolean        @default(true)
+  djId          String?
+  dj            DJ?            @relation(fields: [djId], references: [id], onDelete: SetNull)
+  scheduleSlots ScheduleSlot[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@map("shows")
+}
+
+model ScheduleSlot {
+  id        String   @id @default(uuid())
+  dayOfWeek Int // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  startTime String // "HH:mm" 24h format (e.g. "14:00")
+  endTime   String // "HH:mm" 24h format (e.g. "16:00")
+  timezone  String   @default("America/Toronto") // Ottawa Time
+  showId    String
+  show      Show     @relation(fields: [showId], references: [id], onDelete: Cascade)
+  djId      String?
+  dj        DJ?      @relation(fields: [djId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([dayOfWeek])
+  @@map("schedule_slots")
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  description String   @db.Text
+  location    String
+  eventDate   DateTime
+  bannerUrl   String?
+  ticketUrl   String?
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("events")
+}
+
+model Announcement {
+  id        String    @id @default(uuid())
+  title     String
+  message   String    @db.Text
+  linkText  String?
+  linkUrl   String?
+  isActive  Boolean   @default(true)
+  priority  Int       @default(1)
+  startAt   DateTime?
+  endAt     DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("announcements")
+}
+
+model SongRequest {
+  id          String        @id @default(uuid())
+  artist      String
+  songTitle   String
+  dedication  String?       @db.Text
+  requestedBy String
+  email       String?
+  status      RequestStatus @default(NEW)
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status])
+  @@map("song_requests")
+}
+
+model ContactMessage {
+  id        String        @id @default(uuid())
+  name      String
+  email     String
+  subject   String?
+  message   String        @db.Text
+  status    ContactStatus @default(NEW)
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status])
+  @@map("contact_messages")
+}
+
+model PushSubscription {
+  id        String   @id @default(uuid())
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  userAgent String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("push_subscriptions")
+}
+
+model Sponsor {
+  id        String           @id @default(uuid())
+  name      String
+  logoUrl   String
+  targetUrl String
+  placement SponsorPlacement @default(HEADER)
+  active    Boolean          @default(true)
+  startDate DateTime?
+  endDate   DateTime?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  stats     SponsorStat[]
+
+  @@map("sponsors")
+}
+
+model SponsorStat {
+  id          String   @id @default(uuid())
+  sponsorId   String
+  sponsor     Sponsor  @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+  date        String // "YYYY-MM-DD"
+  impressions Int      @default(0)
+  clicks      Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([sponsorId, date])
+  @@map("sponsor_stats")
+}
+
+model Setting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String   @db.Text
+  description String?
+  isPublic    Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+
+  @@map("settings")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action     String // e.g. "CREATE_SHOW", "UPDATE_SETTING", "DELETE_DJ"
+  targetType String // e.g. "Show", "Setting", "DJ"
+  targetId   String?
+  details    String?  @db.Text // JSON string of previous / new state or parameters
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+

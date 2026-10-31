@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==============================================================
+   KWIZZ Radio - Premium Reggae & Dancehall Dark Theme
+   Acoustic, Warm, Modern Glassmorphism & Accessible Palette
+   ============================================================== */
+
+:root {
+  /* Dark Mode (Default) */
+  --bg-primary: #050507;
+  --bg-secondary: #0c0c10;
+  --bg-card: #121217;
+  --bg-card-hover: #191921;
+  --bg-glass: rgba(18, 18, 23, 0.85);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.16);
+
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+
+  /* Sophisticated Reggae Accents */
+  --reggae-green: #10b981;
+  --reggae-green-glow: rgba(16, 185, 129, 0.25);
+  --reggae-gold: #f59e0b;
+  --reggae-gold-hover: #d97706;
+  --reggae-gold-glow: rgba(245, 158, 11, 0.3);
+  --reggae-red: #ef4444;
+  --reggae-red-glow: rgba(239, 68, 68, 0.25);
+
+  --player-bg: rgba(9, 9, 12, 0.94);
+  --header-bg: rgba(5, 5, 7, 0.88);
+}
+
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --bg-glass: rgba(255, 255, 255, 0.92);
+  --border-color: #e2e8f0;
+  --border-hover: #cbd5e1;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  --reggae-green: #059669;
+  --reggae-green-glow: rgba(5, 150, 105, 0.15);
+  --reggae-gold: #d97706;
+  --reggae-gold-hover: #b45309;
+  --reggae-gold-glow: rgba(217, 119, 6, 0.2);
+  --reggae-red: #dc2626;
+  --reggae-red-glow: rgba(220, 38, 38, 0.15);
+
+  --player-bg: rgba(255, 255, 255, 0.96);
+  --header-bg: rgba(255, 255, 255, 0.94);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Accessible Keyboard Focus Ring (WCAG 2.1 AA) */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--reggae-gold);
+  outline-offset: 3px;
+}
+
+/* Elegant, refined Reggae accent line */
+.reggae-stripe {
+  height: 3px;
+  background: linear-gradient(90deg, #10b981 0%, #f59e0b 50%, #ef4444 100%);
+  opacity: 0.9;
+}
+
+.reggae-gradient-text {
+  background: linear-gradient(135deg, #34d399 0%, #fbbf24 50%, #f87171 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism card surfaces */
+.kwizz-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 1.25rem;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kwizz-card:hover {
+  border-color: var(--border-hover);
+  background-color: var(--bg-card-hover);
+}
+
+/* Equalizer Bars Animation */
+.equalizer-bar {
+  display: inline-block;
+  width: 3px;
+  background-color: var(--reggae-gold);
+  margin: 0 1px;
+  border-radius: 9999px;
+  animation: equalize 1.2s ease-in-out infinite alternate;
+}
+
+.equalizer-bar:nth-child(2) { animation-delay: 0.25s; height: 16px; background-color: var(--reggae-green); }
+.equalizer-bar:nth-child(3) { animation-delay: 0.5s; height: 22px; background-color: var(--reggae-gold); }
+.equalizer-bar:nth-child(4) { animation-delay: 0.15s; height: 12px; background-color: var(--reggae-red); }
+
+@keyframes equalize {
+  0% { transform: scaleY(0.25); }
+  100% { transform: scaleY(1); }
+}
+
+/* Dynamic Page Container & Offset */
+#main-content {
+  flex: 1;
+  padding-bottom: 105px; /* Offset for sticky player */
+  opacity: 1;
+  transition: opacity 0.18s ease-in-out;
+}
+
+#main-content.loading {
+  opacity: 0.5;
+}
+
+/* Primary Brand Gold Buttons */
+.btn-primary-gold {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #09090b;
+  font-weight: 800;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25);
+}
+
+.btn-primary-gold:hover {
+  background: linear-gradient(135deg, #fcd34d 0%, #fbbf24 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 25px rgba(245, 158, 11, 0.35);
+}
+
+.btn-primary-gold:active {
+  transform: translateY(0);
+}
+
+/* Day Tabs on Schedule */
+.day-tab-active {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #09090b !important;
+  font-weight: 800;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+  transform: scale(1.04);
+}
+
+.day-tab-inactive {
+  background-color: rgba(24, 24, 27, 0.6);
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.day-tab-inactive:hover {
+  color: #ffffff !important;
+  background-color: rgba(39, 39, 42, 0.8);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Form inputs & Focus States */
+.kwizz-input {
+  background-color: rgba(24, 24, 27, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-radius: 0.75rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.kwizz-input:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+  background-color: rgba(24, 24, 27, 0.95);
+}
+
+/* Badges */
+.badge-gold {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+}
+
+.badge-emerald {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+}
+
+.badge-rose {
+  background-color: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.28);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+

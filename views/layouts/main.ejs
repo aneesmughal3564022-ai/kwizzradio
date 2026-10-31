@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title><%= typeof title !== 'undefined' ? title : 'KWIZZ Radio | Ottawa Reggae & Dancehall 24/7' %></title>
+  <meta name="description" content="<%= typeof description !== 'undefined' ? description : 'Stream KWIZZ Radio live from Ottawa, Canada. Non-stop reggae, dancehall, roots culture, live DJ programming and Caribbean sounds.' %>">
+
+  <!-- PWA & Mobile Icons -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/svg+xml" href="/images/fallback-album.svg">
+
+  <!-- Open Graph & Twitter Cards -->
+  <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'KWIZZ Radio - Ottawa Reggae 24/7' %>">
+  <meta property="og:description" content="<%= typeof description !== 'undefined' ? description : 'Live streaming reggae and dancehall station based in Ottawa, Canada.' %>">
+  <meta property="og:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : '/images/fallback-album.svg' %>">
+  <meta property="og:type" content="music.radio_station">
+  <meta property="og:url" content="<%= typeof canonicalUrl !== 'undefined' ? canonicalUrl : 'http://localhost:3000' %>">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@kwizzradio">
+
+  <!-- Tailwind CSS via CDN + Custom Stylesheet -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/tailwind.css">
+
+  <!-- JSON-LD Structured Data for RadioStation -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "RadioStation",
+    "name": "KWIZZ Radio",
+    "url": "http://localhost:3000",
+    "genre": ["Reggae", "Dancehall", "Roots", "Caribbean"],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Ottawa",
+      "addressRegion": "ON",
+      "addressCountry": "CA"
+    },
+    "broadcaster": {
+      "@type": "Organization",
+      "name": "KWIZZ Radio Ottawa"
+    }
+  }
+  </script>
+
+  <!-- Prevent Theme Flash -->
+  <script>
+    (function() {
+      try {
+        const saved = localStorage.getItem('kwizz_radio_theme');
+        if (saved === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body class="flex flex-col min-h-screen bg-black text-white antialiased selection:bg-amber-400 selection:text-black">
+  
+  <!-- Accessible Skip to Content Link (WCAG 2.1 AA) -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-amber-400 focus:text-black focus:font-bold focus:rounded-lg">
+    Skip to main content
+  </a>
+
+  <!-- Announcement Banner -->
+  <%- include('../partials/announcement') %>
+
+  <!-- Station Header -->
+  <%- include('../partials/header') %>
+
+  <!-- Main Dynamic Content Area (Swapped seamlessly by navigation.js) -->
+  <main id="main-content" role="main" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <%- body %>
+  </main>
+
+  <!-- Station Footer -->
+  <%- include('../partials/footer') %>
+
+  <!-- Persistent Sticky Audio Player (Never reloaded on page navigation) -->
+  <%- include('../partials/player') %>
+
+  <!-- Cookie Consent Banner -->
+  <%- include('../partials/cookie-banner') %>
+
+  <!-- Scripts -->
+  <script src="/js/theme.js"></script>
+  <script src="/js/player.js"></script>
+  <script src="/js/navigation.js"></script>
+  <script src="/js/sse-client.js"></script>
+  <script src="/js/push-client.js"></script>
+  <script src="/js/analytics.js"></script>
+</body>
+</html>
+

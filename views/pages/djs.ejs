@@ -1,0 +1,65 @@
+<!-- KWIZZ Radio DJs & Presenters Roster -->
+<div class="space-y-8 max-w-6xl mx-auto">
+  <div class="border-b border-zinc-800/80 pb-6">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-rose text-xs font-semibold mb-2">
+      <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+      <span>STATION TALENT</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-black text-white" style="color: var(--text-primary);">
+      DJs &amp; Presenters
+    </h1>
+    <p class="text-zinc-400 text-sm mt-1">
+      The selectors, mic controllers, and music curators powering Ottawa's favorite Caribbean station.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% if (typeof djs !== 'undefined' && djs.length > 0) { %>
+      <% djs.forEach(dj => { %>
+        <article class="kwizz-card overflow-hidden group flex flex-col justify-between">
+          <div>
+            <div class="relative h-56 bg-zinc-900 overflow-hidden">
+              <img src="<%= dj.photoUrl || '/images/fallback-album.svg' %>" alt="<%= dj.name %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+              <div class="absolute bottom-3 left-4 right-4">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-400 text-black">
+                  Resident DJ
+                </span>
+                <h2 class="text-xl font-black text-white mt-1">
+                  <a href="/djs/<%= dj.slug %>" class="hover:text-amber-400 transition-colors">
+                    <%= dj.name %>
+                  </a>
+                </h2>
+              </div>
+            </div>
+
+            <div class="p-5 text-xs text-zinc-400 leading-relaxed">
+              <%= dj.bio %>
+            </div>
+          </div>
+
+          <div class="p-5 pt-0 border-t border-zinc-800/80 mt-auto flex items-center justify-between">
+            <a href="/djs/<%= dj.slug %>" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1">
+              View Profile &amp; Shows &rarr;
+            </a>
+
+            <!-- Social Links -->
+            <div class="flex items-center gap-2 text-zinc-400">
+              <% if (dj.socialInstagram) { %>
+                <a href="<%= dj.socialInstagram %>" target="_blank" rel="noopener noreferrer" class="hover:text-white" aria-label="<%= dj.name %> on Instagram">
+                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069z"/></svg>
+                </a>
+              <% } %>
+              <% if (dj.socialTwitter) { %>
+                <a href="<%= dj.socialTwitter %>" target="_blank" rel="noopener noreferrer" class="hover:text-white" aria-label="<%= dj.name %> on X">
+                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+              <% } %>
+            </div>
+          </div>
+        </article>
+      <% }); %>
+    <% } %>
+  </div>
+</div>
+

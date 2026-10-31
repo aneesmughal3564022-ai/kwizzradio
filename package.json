@@ -1,0 +1,72 @@
+{
+  "name": "kwizz-radio",
+  "version": "1.0.0",
+  "description": "KWIZZ Radio - Ottawa Reggae & Dancehall Online Radio Station",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "build:css": "tailwindcss -i ./src/styles/input.css -o ./public/css/tailwind.css --minify",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:seed": "node prisma/seed.js",
+    "firebase:seed": "node scripts/seedFirebase.js",
+    "test": "jest --detectOpenHandles --forceExit",
+    "test:unit": "jest tests/unit --detectOpenHandles --forceExit",
+    "test:integration": "jest tests/integration --detectOpenHandles --forceExit",
+    "test:e2e": "playwright test",
+    "lint": "eslint src/ tests/"
+  },
+  "keywords": [
+    "radio",
+    "reggae",
+    "dancehall",
+    "live365",
+    "streaming",
+    "ottawa"
+  ],
+  "author": "KWIZZ Radio Team",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@prisma/client": "^6.4.1",
+    "argon2": "^0.41.1",
+    "compression": "^1.8.0",
+    "cookie-parser": "^1.4.7",
+    "cookie-session": "^2.1.0",
+    "cors": "^2.8.5",
+    "csrf-csrf": "^3.1.0",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "firebase-admin": "^14.5.0",
+    "helmet": "^8.0.0",
+    "ioredis": "^5.5.0",
+    "nodemailer": "^6.10.0",
+    "otplib": "^12.0.1",
+    "pino": "^9.6.0",
+    "pino-http": "^10.4.0",
+    "pino-pretty": "^13.0.0",
+    "rate-limit-redis": "^4.2.0",
+    "web-push": "^3.6.7",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.1",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "prisma": "^6.4.1",
+    "supertest": "^7.0.0",
+    "tailwindcss": "^3.4.17"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testTimeout": 10000,
+    "verbose": true,
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/tests/e2e/"
+    ]
+  }
+}

@@ -1,0 +1,159 @@
+<div class="space-y-8">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-4">
+    <div>
+      <h1 class="text-2xl font-black text-white">Station Control &amp; Analytics</h1>
+      <p class="text-xs text-zinc-400">Welcome back, <span class="text-amber-400 font-bold"><%= user.name %></span> (<%= user.role %>)</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-xs font-bold">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>STREAM ONLINE</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Metric Overview Cards -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="p-5 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-1">
+      <span class="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Current Listeners</span>
+      <div class="text-3xl font-black text-white"><%= currentListeners %></div>
+      <span class="text-[11px] text-emerald-400 font-medium">Real-time live connections</span>
+    </div>
+
+    <div class="p-5 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-1">
+      <span class="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Sessions Today</span>
+      <div class="text-3xl font-black text-amber-400"><%= totalSessionsToday %></div>
+      <span class="text-[11px] text-zinc-400 font-medium">+14% vs yesterday</span>
+    </div>
+
+    <div class="p-5 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-1">
+      <span class="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Sponsor Impressions</span>
+      <div class="text-3xl font-black text-white"><%= totalImpressions %></div>
+      <span class="text-[11px] text-zinc-400 font-medium"><%= totalClicks %> total clicks</span>
+    </div>
+
+    <div class="p-5 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-1">
+      <span class="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Peak Times</span>
+      <div class="text-sm font-bold text-white truncate"><%= peakTimes %></div>
+      <span class="text-[11px] text-zinc-400 font-medium">Drive Time high-volume</span>
+    </div>
+  </div>
+
+  <!-- Charts & Demographics Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Top Listener Countries (PRD 5.10) -->
+    <div class="p-6 rounded-3xl bg-zinc-950 border border-zinc-800 space-y-4">
+      <h3 class="text-sm font-bold text-white uppercase tracking-wider">Top Listener Countries</h3>
+      <div class="space-y-3">
+        <% topCountries.forEach(c => { %>
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-semibold text-zinc-300 flex items-center gap-2">
+                <span><%= c.flag %></span>
+                <span><%= c.country %></span>
+              </span>
+              <span class="font-bold text-amber-400"><%= c.percentage %>% (<%= c.listeners %> listeners)</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-zinc-900 overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-emerald-500 to-amber-400 rounded-full" style="width: <%= c.percentage %>%"></div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+
+    <!-- Most Requested Songs (PRD 5.10) -->
+    <div class="p-6 rounded-3xl bg-zinc-950 border border-zinc-800 space-y-4">
+      <h3 class="text-sm font-bold text-white uppercase tracking-wider">Most Requested Tracks</h3>
+      <% if (topRequestedSongs && topRequestedSongs.length > 0) { %>
+        <ul class="space-y-2 text-xs">
+          <% topRequestedSongs.forEach((s, idx) => { %>
+            <li class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-900 border border-zinc-800">
+              <div class="flex items-center gap-2 truncate">
+                <span class="w-5 h-5 rounded-full bg-zinc-800 text-amber-400 flex items-center justify-center font-bold text-[10px]"><%= idx + 1 %></span>
+                <span class="font-medium text-white truncate"><%= s.song %></span>
+              </div>
+              <span class="font-bold text-zinc-400 shrink-0"><%= s.count %> requests</span>
+            </li>
+          <% }); %>
+        </ul>
+      <% } else { %>
+        <div class="text-xs text-zinc-500 p-4 text-center">No track requests recorded yet today.</div>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Recent Song Requests Inbox Preview -->
+  <div class="p-6 rounded-3xl bg-zinc-950 border border-zinc-800 space-y-4">
+    <div class="flex items-center justify-between">
+      <h3 class="text-sm font-bold text-white uppercase tracking-wider">Recent Song Requests</h3>
+      <a href="/admin/requests" class="text-xs text-amber-400 hover:underline">View All &rarr;</a>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs">
+        <thead class="border-b border-zinc-800 text-zinc-500 font-bold uppercase">
+          <tr>
+            <th class="py-2">Track &amp; Artist</th>
+            <th class="py-2">Requested By</th>
+            <th class="py-2">Dedication</th>
+            <th class="py-2">Status</th>
+            <th class="py-2 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-zinc-900">
+          <% if (recentRequests && recentRequests.length > 0) { %>
+            <% recentRequests.forEach(req => { %>
+              <tr class="hover:bg-zinc-900/40">
+                <td class="py-2.5 font-bold text-white"><%= req.songTitle %> - <span class="text-zinc-400 font-normal"><%= req.artist %></span></td>
+                <td class="py-2.5 text-zinc-300"><%= req.requestedBy %></td>
+                <td class="py-2.5 text-zinc-400 truncate max-w-xs"><%= req.dedication || '-' %></td>
+                <td class="py-2.5">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase <%= req.status === 'PLAYED' ? 'bg-emerald-950 text-emerald-400' : (req.status === 'REJECTED' ? 'bg-rose-950 text-rose-400' : 'bg-amber-950 text-amber-400') %>">
+                    <%= req.status %>
+                  </span>
+                </td>
+                <td class="py-2.5 text-right space-x-1">
+                  <form action="/admin/requests/<%= req.id %>/status" method="POST" class="inline">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="status" value="PLAYED">
+                    <button type="submit" class="px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-[10px] font-bold text-emerald-400">Played</button>
+                  </form>
+                  <form action="/admin/requests/<%= req.id %>/status" method="POST" class="inline">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="status" value="REJECTED">
+                    <button type="submit" class="px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-[10px] font-bold text-rose-400">Reject</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr><td colspan="5" class="py-4 text-center text-zinc-500">No requests yet.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Audit Log Summary -->
+  <% if (user.role === 'ADMIN' && auditLogs && auditLogs.length > 0) { %>
+    <div class="p-6 rounded-3xl bg-zinc-950 border border-zinc-800 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Recent Staff Actions (Audit Log)</h3>
+        <a href="/admin/audit" class="text-xs text-amber-400 hover:underline">Full Audit Log &rarr;</a>
+      </div>
+      <ul class="space-y-2 text-xs">
+        <% auditLogs.forEach(log => { %>
+          <li class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-900 border border-zinc-800">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-amber-400"><%= log.action %></span>
+              <span class="text-zinc-400">&bull; <%= log.targetType %> (<%= log.targetId || 'global' %>)</span>
+            </div>
+            <span class="text-[10px] text-zinc-500"><%= new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></span>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+</div>
+

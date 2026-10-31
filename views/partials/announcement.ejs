@@ -1,0 +1,18 @@
+<% if (typeof announcement !== 'undefined' && announcement && announcement.isActive) { %>
+<aside aria-label="Announcement" class="bg-zinc-950/95 border-b border-white/10 text-white text-xs py-2.5 px-4 shadow-sm transition-all">
+  <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5 overflow-hidden">
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-600/20 text-rose-400 border border-rose-500/30">
+        Live Alert
+      </span>
+      <span class="font-bold text-zinc-100 truncate"><%= announcement.title %>:</span>
+      <span class="text-zinc-400 truncate hidden sm:inline"><%= announcement.message %></span>
+    </div>
+    <% if (announcement.linkUrl) { %>
+    <a href="<%= announcement.linkUrl %>" class="shrink-0 text-xs font-bold text-amber-400 hover:text-amber-300 underline underline-offset-4 flex items-center gap-1">
+      <%= announcement.linkText || 'Learn More' %> &rarr;
+    </a>
+    <% } %>
+  </div>
+</aside>
+<% } %>

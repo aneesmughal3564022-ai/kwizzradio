@@ -1,0 +1,55 @@
+<div class="space-y-8 max-w-3xl mx-auto">
+  <div class="border-b border-zinc-800 pb-4">
+    <h1 class="text-2xl font-black text-white">Web Push Notification Composer</h1>
+    <p class="text-xs text-zinc-400">Broadcast real-time push alerts to opted-in listeners on desktop and mobile.</p>
+  </div>
+
+  <div class="p-5 rounded-2xl bg-zinc-950 border border-zinc-800 flex items-center justify-between">
+    <div>
+      <span class="text-xs uppercase font-bold text-zinc-400 block">Subscribers Reach</span>
+      <span class="text-2xl font-black text-amber-400"><%= subscribersCount %></span>
+      <span class="text-xs text-zinc-400 font-medium ml-1">Active opted-in browsers</span>
+    </div>
+    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-emerald-950 text-emerald-400 border border-emerald-500/30">
+      VAPID Enabled
+    </span>
+  </div>
+
+  <form action="/admin/notifications/send" method="POST" class="bg-zinc-950 border border-zinc-800 p-8 rounded-3xl space-y-5 shadow-xl text-xs">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <div>
+      <label class="block font-bold uppercase text-zinc-300 mb-1">Notification Title <span class="text-rose-500">*</span></label>
+      <input 
+        type="text" 
+        name="title" 
+        required 
+        placeholder="e.g. Empress Tanya is LIVE with Dancehall Fever!" 
+        class="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-700/80 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm">
+    </div>
+
+    <div>
+      <label class="block font-bold uppercase text-zinc-300 mb-1">Notification Body <span class="text-rose-500">*</span></label>
+      <textarea 
+        name="body" 
+        rows="3" 
+        required 
+        placeholder="Tune in right now for 2 hours of hot Jamaican riddims and listener requests..." 
+        class="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-700/80 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm resize-none"></textarea>
+    </div>
+
+    <div>
+      <label class="block font-bold uppercase text-zinc-300 mb-1">Target Click URL</label>
+      <input 
+        type="text" 
+        name="url" 
+        value="/listen" 
+        class="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-700/80 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm">
+    </div>
+
+    <button type="submit" class="w-full py-3.5 rounded-xl btn-primary-gold text-sm uppercase tracking-wider shadow-lg">
+      Send Notification to All Subscribers &rarr;
+    </button>
+  </form>
+</div>
+

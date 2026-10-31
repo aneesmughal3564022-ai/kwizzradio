@@ -1,0 +1,105 @@
+<div class="space-y-8">
+  <div class="flex items-center justify-between border-b border-zinc-800 pb-4">
+    <div>
+      <h1 class="text-2xl font-black text-white">Manage Weekly Schedule</h1>
+      <p class="text-xs text-zinc-400">Configure broadcast slots, show alignments, and DJ assignments.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <!-- Add Slot Form -->
+    <div class="lg:col-span-5 bg-zinc-950 border border-zinc-800 p-6 rounded-3xl space-y-4">
+      <h3 class="text-base font-bold text-white">Add Broadcast Slot</h3>
+      
+      <form action="/admin/schedule/create" method="POST" class="space-y-4 text-xs">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        <div>
+          <label class="block font-bold uppercase text-zinc-400 mb-1">Day of Week</label>
+          <select name="dayOfWeek" required class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+            <option value="1">Monday</option>
+            <option value="2">Tuesday</option>
+            <option value="3">Wednesday</option>
+            <option value="4">Thursday</option>
+            <option value="5">Friday</option>
+            <option value="6">Saturday</option>
+            <option value="0">Sunday</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold uppercase text-zinc-400 mb-1">Start Time (24h)</label>
+            <input type="time" name="startTime" required value="08:00" class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+          </div>
+          <div>
+            <label class="block font-bold uppercase text-zinc-400 mb-1">End Time (24h)</label>
+            <input type="time" name="endTime" required value="12:00" class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold uppercase text-zinc-400 mb-1">Show</label>
+          <select name="showId" required class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+            <% shows.forEach(s => { %>
+              <option value="<%= s.id %>"><%= s.title %> (<%= s.genre %>)</option>
+            <% }); %>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold uppercase text-zinc-400 mb-1">Assigned DJ / Presenter</label>
+          <select name="djId" class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+            <option value="">-- No Specific DJ --</option>
+            <% djs.forEach(d => { %>
+              <option value="<%= d.id %>"><%= d.name %></option>
+            <% }); %>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl btn-primary-gold uppercase tracking-wider">
+          Create Schedule Slot
+        </button>
+      </form>
+    </div>
+
+    <!-- Existing Slots Table -->
+    <div class="lg:col-span-7 bg-zinc-950 border border-zinc-800 p-6 rounded-3xl space-y-4">
+      <h3 class="text-base font-bold text-white">Configured Weekly Slots</h3>
+      
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="border-b border-zinc-800 text-zinc-500 font-bold uppercase">
+            <tr>
+              <th class="py-2">Day</th>
+              <th class="py-2">Time (ET)</th>
+              <th class="py-2">Show ID</th>
+              <th class="py-2 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-zinc-900">
+            <% const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; %>
+            <% if (slots && slots.length > 0) { %>
+              <% slots.forEach(slot => { %>
+                <tr class="hover:bg-zinc-900/40">
+                  <td class="py-2.5 font-bold text-amber-400"><%= days[slot.dayOfWeek] || slot.dayOfWeek %></td>
+                  <td class="py-2.5 text-white font-mono"><%= slot.startTime %> - <%= slot.endTime %></td>
+                  <td class="py-2.5 text-zinc-400 truncate max-w-[150px]"><%= slot.showId %></td>
+                  <td class="py-2.5 text-right">
+                    <form action="/admin/schedule/<%= slot.id %>/delete" method="POST" class="inline" onsubmit="return confirm('Delete this slot?');">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <button type="submit" class="px-2 py-1 rounded bg-red-950 text-red-400 hover:bg-red-900 font-bold text-[10px]">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr><td colspan="4" class="py-4 text-center text-zinc-500">No schedule slots configured.</td></tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

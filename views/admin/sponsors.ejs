@@ -1,0 +1,70 @@
+<div class="space-y-8">
+  <div class="flex items-center justify-between border-b border-zinc-800 pb-4">
+    <div>
+      <h1 class="text-2xl font-black text-white">Manage Sponsors &amp; Advertisers</h1>
+      <p class="text-xs text-zinc-400">Non-blocking banner placements and performance metrics.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div class="lg:col-span-5 bg-zinc-950 border border-zinc-800 p-6 rounded-3xl space-y-4">
+      <h3 class="text-base font-bold text-white">Add Sponsor Partner</h3>
+      
+      <form action="/admin/sponsors/create" method="POST" class="space-y-4 text-xs">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        <div>
+          <label class="block font-bold uppercase text-zinc-400 mb-1">Business / Sponsor Name</label>
+          <input type="text" name="name" required placeholder="e.g. Island Grill Ottawa" class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+        </div>
+
+        <div>
+          <label class="block font-bold uppercase text-zinc-400 mb-1">Target Website URL</label>
+          <input type="url" name="targetUrl" required placeholder="https://example.com" class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+        </div>
+
+        <div>
+          <label class="block font-bold uppercase text-zinc-400 mb-1">Logo URL</label>
+          <input type="text" name="logoUrl" placeholder="/images/sponsors/example.svg" class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+        </div>
+
+        <div>
+          <label class="block font-bold uppercase text-zinc-400 mb-1">Placement Slot</label>
+          <select name="placement" class="w-full px-3 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white">
+            <option value="HEADER">Header Banner (Non-interrupting)</option>
+            <option value="SIDEBAR">Sidebar Slot</option>
+            <option value="FOOTER">Footer Slot</option>
+            <option value="SPONSOR_PAGE">Sponsor Directory Page</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl btn-primary-gold uppercase tracking-wider">
+          Add Sponsor
+        </button>
+      </form>
+    </div>
+
+    <div class="lg:col-span-7 bg-zinc-950 border border-zinc-800 p-6 rounded-3xl space-y-4">
+      <h3 class="text-base font-bold text-white">Active Sponsors &amp; Performance</h3>
+      <div class="space-y-3">
+        <% if (sponsors && sponsors.length > 0) { %>
+          <% sponsors.forEach(sp => { %>
+            <div class="p-4 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-between gap-4">
+              <div>
+                <span class="text-[10px] font-bold uppercase text-amber-400 block"><%= sp.placement %></span>
+                <h4 class="text-sm font-bold text-white"><%= sp.name %></h4>
+                <a href="<%= sp.targetUrl %>" target="_blank" class="text-xs text-zinc-400 underline truncate block max-w-xs"><%= sp.targetUrl %></a>
+              </div>
+              <div class="text-right shrink-0">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-950 text-emerald-400">Active</span>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <div class="p-4 text-center text-zinc-500 text-xs">No active sponsors.</div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
