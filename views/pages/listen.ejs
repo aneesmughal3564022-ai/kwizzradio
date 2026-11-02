@@ -3,41 +3,41 @@
   <div class="text-center space-y-3">
     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-emerald text-xs font-semibold">
       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-      <span>128 KBPS HIGH DEFINITION LIVE FEED</span>
+      <span>128 KBPS HIGH DEFINITION LIVE FEED &bull; INTERNET RADIO</span>
     </div>
-    <h1 class="text-3xl sm:text-5xl font-black text-white" style="color: var(--text-primary);">
-      KWIZZ Listening Lounge
+    <h1 class="text-3xl sm:text-5xl font-black" style="color: var(--text-primary);">
+      KWIZZ Radio &bull; KWIZZ Listening Lounge
     </h1>
-    <p class="text-zinc-400 text-sm sm:text-base max-w-xl mx-auto">
-      Pure reggae, roots, and dancehall broadcast straight from Ottawa, Canada. Never stop the groove.
+    <p class="text-sm sm:text-base max-w-xl mx-auto" style="color: var(--text-secondary);">
+      Pure reggae, roots, and dancehall broadcast straight from Ottawa, Canada to the world on internet radio.
     </p>
   </div>
 
   <!-- Giant Interactive Visualizer & Player Card -->
-  <div class="rounded-3xl kwizz-card p-8 sm:p-12 shadow-2xl relative overflow-hidden text-center" style="background-color: var(--bg-card);">
+  <div class="rounded-3xl kwizz-card p-8 sm:p-12 shadow-2xl relative overflow-hidden text-center transition-all" style="background-color: var(--bg-card); border-color: var(--border-color);">
     <div class="absolute -top-32 -left-32 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute -bottom-32 -right-32 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="relative z-10 flex flex-col items-center">
       <!-- Vinyl / Artwork Showcase -->
-      <div class="relative w-48 h-48 sm:w-64 sm:h-64 rounded-2xl overflow-hidden shadow-2xl border-2 border-zinc-800/80 bg-zinc-900 mb-6 group">
+      <div class="relative w-48 h-48 sm:w-64 sm:h-64 rounded-2xl overflow-hidden shadow-2xl border-2 mb-6 group" style="background-color: var(--bg-card); border-color: var(--border-color);">
         <img id="listen-page-art" src="/images/fallback-album.svg" alt="Now Playing Track Artwork" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-xs">
-          <button onclick="if(window.player) window.player.toggle()" class="w-16 h-16 rounded-full btn-primary-gold flex items-center justify-center shadow-xl transform hover:scale-110 active:scale-95 transition-transform" aria-label="Toggle Playback">
+          <button onclick="if(window.player) window.player.toggle()" class="w-16 h-16 rounded-full btn-primary-gold flex items-center justify-center shadow-xl transform hover:scale-110 active:scale-95 transition-transform cursor-pointer" aria-label="Toggle Playback">
             <svg class="w-8 h-8 fill-current translate-x-0.5 text-zinc-950" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           </button>
         </div>
       </div>
 
-      <h2 id="listen-page-title" class="text-2xl sm:text-3xl font-black text-white truncate max-w-lg mb-1" style="color: var(--text-primary);">
+      <h2 id="listen-page-title" class="text-2xl sm:text-3xl font-black truncate max-w-lg mb-1" style="color: var(--text-primary);">
         KWIZZ Radio Live
       </h2>
-      <p id="listen-page-artist" class="text-base sm:text-lg font-bold text-amber-400 truncate max-w-lg mb-6">
-        Ottawa's Reggae &amp; Dancehall
+      <p id="listen-page-artist" class="text-base sm:text-lg font-bold text-amber-500 truncate max-w-lg mb-6">
+        Ottawa's Reggae &amp; Dancehall &bull; Worldwide Stream
       </p>
 
       <!-- Big Play Button for 1-Click Launch -->
-      <button onclick="if(window.player) window.player.toggle()" class="px-8 py-4 rounded-2xl btn-primary-gold text-lg flex items-center gap-3">
+      <button onclick="if(window.player) window.player.toggle()" class="px-8 py-4 rounded-2xl btn-primary-gold text-lg flex items-center gap-3 cursor-pointer">
         <svg class="w-6 h-6 fill-current text-zinc-950" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         <span class="text-zinc-950 font-black">Play Live Stream</span>
       </button>
@@ -47,22 +47,22 @@
   <!-- Recently Played Tracks (Last 10) (PRD 5.2) -->
   <div class="space-y-4">
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-bold text-white flex items-center gap-2" style="color: var(--text-primary);">
-        <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <h3 class="text-lg font-bold flex items-center gap-2" style="color: var(--text-primary);">
+        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         <span>Recently Played (Last 10 Tracks)</span>
       </h3>
-      <span class="text-xs text-zinc-500">Auto-updated in real-time</span>
+      <span class="text-xs" style="color: var(--text-muted);">Auto-updated in real-time</span>
     </div>
 
     <ul id="recent-tracks-list" class="space-y-2">
       <!-- Populated via sse-client.js and initial fetch -->
-      <li class="flex items-center gap-3 p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
-        <img src="/images/fallback-album.svg" alt="Track" class="w-10 h-10 rounded-lg object-cover bg-zinc-800">
+      <li class="flex items-center gap-3 p-3 rounded-xl border" style="background-color: var(--bg-card); border-color: var(--border-color);">
+        <img src="/images/fallback-album.svg" alt="Track" class="w-10 h-10 rounded-lg object-cover" style="background-color: var(--button-secondary-bg);">
         <div class="min-w-0 flex-1">
-          <h4 class="text-xs font-bold text-white truncate">Could You Be Loved</h4>
-          <p class="text-[11px] text-zinc-400 truncate">Bob Marley &amp; The Wailers</p>
+          <h4 class="text-xs font-bold truncate" style="color: var(--text-primary);">Could You Be Loved</h4>
+          <p class="text-[11px] truncate" style="color: var(--text-secondary);">Bob Marley &amp; The Wailers</p>
         </div>
-        <span class="text-[10px] text-zinc-500">Earlier</span>
+        <span class="text-[10px]" style="color: var(--text-muted);">Earlier</span>
       </li>
     </ul>
   </div>
@@ -90,13 +90,13 @@
           const list = document.getElementById('recent-tracks-list');
           if (list) {
             list.innerHTML = res.data.map(track => `
-              <li class="flex items-center gap-3 p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
-                <img src="${track.artwork || '/images/fallback-album.svg'}" alt="${track.title}" class="w-10 h-10 rounded-lg object-cover bg-zinc-800">
+              <li class="flex items-center gap-3 p-3 rounded-xl border" style="background-color: var(--bg-card); border-color: var(--border-color);">
+                <img src="${track.artwork || '/images/fallback-album.svg'}" alt="${track.title}" class="w-10 h-10 rounded-lg object-cover" style="background-color: var(--button-secondary-bg);">
                 <div class="min-w-0 flex-1">
-                  <h4 class="text-xs font-bold text-white truncate">${track.title}</h4>
-                  <p class="text-[11px] text-zinc-400 truncate">${track.artist}</p>
+                  <h4 class="text-xs font-bold truncate" style="color: var(--text-primary);">${track.title}</h4>
+                  <p class="text-[11px] truncate" style="color: var(--text-secondary);">${track.artist}</p>
                 </div>
-                <span class="text-[10px] text-zinc-500 font-medium">Played</span>
+                <span class="text-[10px]" style="color: var(--text-muted);">Played</span>
               </li>
             `).join('');
           }
@@ -105,4 +105,3 @@
       .catch(() => {});
   })();
 </script>
-

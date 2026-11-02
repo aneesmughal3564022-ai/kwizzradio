@@ -4,10 +4,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= typeof title !== 'undefined' ? title : 'KWIZZ Radio Admin' %></title>
+  
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-title" content="KWIZZ">
+  <meta name="application-name" content="KWIZZ">
+
+  <script>
+    window.tailwind = {
+      darkMode: ['class', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          colors: {
+            reggae: {
+              green: '#10b981',
+              gold: '#f59e0b',
+              red: '#ef4444'
+            }
+          }
+        }
+      }
+    };
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/tailwind.css">
+
+  <script>
+    (function() {
+      try {
+        const saved = localStorage.getItem('kwizz_radio_theme');
+        if (saved === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
-<body class="bg-black text-white min-h-screen flex flex-col antialiased">
+<body class="bg-black text-white min-h-screen flex flex-col antialiased" style="background-color: var(--bg-primary); color: var(--text-primary);">
   
   <!-- Admin Navigation Bar -->
   <header class="border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur-md px-4 py-3 sticky top-0 z-50">
@@ -60,4 +94,3 @@
   </footer>
 </body>
 </html>
-

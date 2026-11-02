@@ -1,8 +1,8 @@
-<!-- KWIZZ Radio Homepage - High End Reggae Dark Theme -->
+<!-- KWIZZ Radio Homepage - Responsive Light & Dark Themes -->
 <div class="space-y-12">
   
   <!-- Hero Section: Stream Header & Now Playing Showcase -->
-  <section class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-zinc-900/80 via-zinc-950 to-black border border-white/10 p-6 sm:p-10 shadow-2xl">
+  <section class="hero-card relative overflow-hidden rounded-3xl border p-6 sm:p-10 shadow-2xl transition-all" style="background-color: var(--bg-card); border-color: var(--border-color);">
     <!-- Subtle Ambient Glows -->
     <div class="absolute -top-32 -right-32 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -11,20 +11,23 @@
       
       <!-- Left Column: Station Pitch & Controls -->
       <div class="lg:col-span-7 space-y-6">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-rose text-xs">
           <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
-          <span class="text-amber-400 font-bold uppercase tracking-wider text-[11px]">Broadcasting Live From Ottawa</span>
+          <span class="font-bold uppercase tracking-wider text-[11px]">24/7 Live Stream &bull; Ottawa &bull; Worldwide</span>
         </div>
 
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight" style="color: var(--text-primary);">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight" style="color: var(--text-primary);">
           Ottawa's Premier <br>
           <span class="reggae-gradient-text">
             Reggae &amp; Dancehall
           </span>
+          <span class="block text-lg sm:text-2xl mt-2 font-bold text-amber-500">
+            KWIZZ Radio &bull; 100% Internet Radio
+          </span>
         </h1>
 
-        <p class="text-zinc-300 text-sm sm:text-base max-w-xl leading-relaxed font-normal">
-          The heartbeat of the Caribbean in Canada's capital. Roots, dub, dancehall club anthems, lovers rock, and live DJ sets streaming 24/7 worldwide.
+        <p class="text-sm sm:text-base max-w-xl leading-relaxed font-normal" style="color: var(--text-secondary);">
+          The heartbeat of the Caribbean in Canada's capital. Roots, dub, dancehall club anthems, lovers rock, and live DJ sets streaming 24/7 worldwide — zero static, pure digital sound.
         </p>
 
         <!-- Main Action Buttons -->
@@ -34,65 +37,65 @@
             <span>Start Listening Live</span>
           </button>
 
-          <a href="/schedule" class="px-5 py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 text-zinc-200 font-bold text-xs uppercase tracking-wider border border-white/10 transition-colors">
+          <a href="/schedule" class="px-5 py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider border transition-colors" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-primary);">
             View Schedule
           </a>
         </div>
 
         <!-- Quick Facts / Stats -->
-        <div class="grid grid-cols-3 gap-4 pt-4 border-t border-white/10 text-xs sm:text-sm">
+        <div class="grid grid-cols-3 gap-4 pt-4 border-t text-xs sm:text-sm" style="border-color: var(--border-color);">
           <div>
-            <div class="font-black text-white text-base sm:text-lg">24/7</div>
-            <div class="text-zinc-400 text-xs">Live Stream</div>
+            <div class="font-black text-base sm:text-lg" style="color: var(--text-primary);">24/7</div>
+            <div class="text-xs" style="color: var(--text-muted);">Internet Stream</div>
           </div>
           <div>
-            <div class="font-black text-white text-base sm:text-lg">128 kbps</div>
-            <div class="text-zinc-400 text-xs">HQ Stereo Audio</div>
+            <div class="font-black text-base sm:text-lg" style="color: var(--text-primary);">128 kbps</div>
+            <div class="text-xs" style="color: var(--text-muted);">HQ Digital Stereo</div>
           </div>
           <div>
-            <div class="font-black text-white text-base sm:text-lg">Free</div>
-            <div class="text-zinc-400 text-xs">No Subscription</div>
+            <div class="font-black text-base sm:text-lg text-emerald-500">Worldwide</div>
+            <div class="text-xs" style="color: var(--text-muted);">No Tuner / FM Needed</div>
           </div>
         </div>
       </div>
 
       <!-- Right Column: Live Track Card -->
       <div class="lg:col-span-5">
-        <div class="rounded-2xl bg-zinc-900/60 backdrop-blur-xl border border-white/10 p-6 shadow-xl space-y-4">
-          <div class="flex items-center justify-between border-b border-white/10 pb-3">
-            <span class="text-xs uppercase font-extrabold tracking-wider text-zinc-400">Now Playing</span>
-            <span class="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-bold">
+        <div class="rounded-2xl border p-6 shadow-xl space-y-4 backdrop-blur-xl" style="background-color: var(--bg-card-subtle); border-color: var(--border-color);">
+          <div class="flex items-center justify-between border-b pb-3" style="border-color: var(--border-color);">
+            <span class="text-xs uppercase font-extrabold tracking-wider" style="color: var(--text-muted);">Now Playing</span>
+            <span class="inline-flex items-center gap-1.5 text-xs text-emerald-500 font-bold">
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               Live On Air
             </span>
           </div>
 
           <div class="flex items-center gap-4">
-            <div class="w-20 h-20 rounded-2xl overflow-hidden bg-zinc-950 border border-white/10 shrink-0 shadow-md">
+            <div class="w-20 h-20 rounded-2xl overflow-hidden border shrink-0 shadow-md" style="background-color: var(--bg-card); border-color: var(--border-color);">
               <img id="hero-track-art" src="/images/fallback-album.svg" alt="Now Playing Album" class="w-full h-full object-cover">
             </div>
             <div class="min-w-0 flex-1">
-              <h3 id="hero-track-title" class="text-lg font-black text-white truncate" style="color: var(--text-primary);">
+              <h3 id="hero-track-title" class="text-lg font-black truncate" style="color: var(--text-primary);">
                 KWIZZ Radio Live
               </h3>
-              <p id="hero-track-artist" class="text-sm text-amber-400 font-bold truncate">
+              <p id="hero-track-artist" class="text-sm font-bold text-amber-500 truncate">
                 Ottawa's Reggae &amp; Dancehall
               </p>
-              <p class="text-xs text-zinc-400 mt-1">Live from Studio Ottawa</p>
+              <p class="text-xs mt-1" style="color: var(--text-muted);">Live from Studio Ottawa &bull; Internet Radio</p>
             </div>
           </div>
 
           <!-- On Now & Up Next Badges -->
-          <div class="grid grid-cols-2 gap-3 pt-3 border-t border-white/10 text-xs">
-            <div class="p-3 rounded-xl bg-black/40 border border-white/5">
-              <span class="text-[10px] font-black uppercase text-amber-400 block mb-0.5">On Now</span>
-              <span class="font-bold text-white truncate block">Ottawa Reggae Morning</span>
-              <span class="text-zinc-400 text-[11px]">with DJ Roots</span>
+          <div class="grid grid-cols-2 gap-3 pt-3 border-t text-xs" style="border-color: var(--border-color);">
+            <div class="p-3 rounded-xl border" style="background-color: var(--bg-card); border-color: var(--border-color);">
+              <span class="text-[10px] font-black uppercase text-amber-500 block mb-0.5">On Now</span>
+              <span class="font-bold truncate block" style="color: var(--text-primary);">Ottawa Reggae Morning</span>
+              <span class="text-[11px]" style="color: var(--text-muted);">with DJ Roots</span>
             </div>
-            <div class="p-3 rounded-xl bg-black/40 border border-white/5">
-              <span class="text-[10px] font-black uppercase text-zinc-400 block mb-0.5">Up Next</span>
-              <span class="font-bold text-white truncate block">Dancehall Fever</span>
-              <span class="text-zinc-400 text-[11px]">with Empress Tanya</span>
+            <div class="p-3 rounded-xl border" style="background-color: var(--bg-card); border-color: var(--border-color);">
+              <span class="text-[10px] font-black uppercase block mb-0.5" style="color: var(--text-muted);">Up Next</span>
+              <span class="font-bold truncate block" style="color: var(--text-primary);">Dancehall Fever</span>
+              <span class="text-[11px]" style="color: var(--text-muted);">with Empress Tanya</span>
             </div>
           </div>
 
@@ -103,17 +106,17 @@
   </section>
 
   <!-- Quick Action Banner: Request a Song -->
-  <section class="rounded-3xl bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 border border-white/10 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-5 shadow-xl">
+  <section class="rounded-3xl border p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-5 shadow-xl transition-all" style="background-color: var(--bg-card); border-color: var(--border-color);">
     <div class="flex items-center gap-4">
-      <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/20 text-amber-400 flex items-center justify-center shrink-0">
+      <div class="w-12 h-12 rounded-2xl badge-gold flex items-center justify-center shrink-0">
         <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       </div>
       <div>
-        <h2 class="text-lg font-black text-white">Have a track in mind?</h2>
-        <p class="text-xs text-zinc-400">Request your favorite roots, reggae or dancehall tune directly to our live DJs in studio.</p>
+        <h2 class="text-lg font-black" style="color: var(--text-primary);">Have a track in mind?</h2>
+        <p class="text-xs" style="color: var(--text-muted);">Request your favorite roots, reggae or dancehall tune directly to KWIZZ Radio selectors in studio.</p>
       </div>
     </div>
-    <a href="/request" class="btn-primary-gold px-5 py-3 rounded-xl text-xs uppercase tracking-wider shrink-0">
+    <a href="/request" class="btn-primary-gold px-5 py-3 rounded-xl text-xs uppercase tracking-wider shrink-0 cursor-pointer">
       Request Song &rarr;
     </a>
   </section>

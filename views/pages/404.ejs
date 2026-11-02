@@ -1,24 +1,23 @@
 <div class="py-16 sm:py-24 flex flex-col items-center justify-center text-center">
   <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-rose-600 via-amber-500 to-emerald-500 p-0.5 flex items-center justify-center shadow-xl mb-6">
-    <div class="w-full h-full bg-zinc-950 rounded-[14px] flex items-center justify-center">
-      <span class="text-3xl font-black text-amber-400">404</span>
+    <div class="w-full h-full rounded-[14px] flex items-center justify-center" style="background-color: var(--bg-card);">
+      <span class="text-3xl font-black text-amber-500">404</span>
     </div>
   </div>
 
-  <h1 class="text-3xl sm:text-4xl font-black text-white mb-3" style="color: var(--text-primary);">
+  <h1 class="text-3xl sm:text-4xl font-black mb-3" style="color: var(--text-primary);">
     Lost in the Rhythm?
   </h1>
-  <p class="text-zinc-400 max-w-md mb-8 text-sm sm:text-base">
-    <%= typeof errorMessage !== 'undefined' ? errorMessage : "The page or track you're looking for doesn't exist or has moved. Tune right back in to our live stream." %>
+  <p class="max-w-md mb-8 text-sm sm:text-base" style="color: var(--text-muted);">
+    <%= typeof errorMessage !== 'undefined' ? errorMessage : "The page or track you're looking for doesn't exist or has moved. Tune right back in to our live KWIZZ Radio internet stream." %>
   </p>
 
   <div class="flex items-center gap-4">
-    <a href="/" class="px-6 py-3 rounded-xl text-sm font-bold btn-primary-gold">
+    <a href="/" class="px-6 py-3 rounded-xl text-sm font-bold btn-primary-gold cursor-pointer">
       Return Home
     </a>
-    <a href="/listen" class="px-6 py-3 rounded-xl text-sm font-bold bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 text-white transition-colors">
+    <a href="/listen" class="px-6 py-3 rounded-xl text-sm font-bold border transition-colors cursor-pointer" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-primary);">
       Listen Live
     </a>
   </div>
 </div>
-

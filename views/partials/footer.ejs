@@ -1,16 +1,16 @@
-<footer class="border-t border-zinc-800/80 bg-black text-zinc-400 text-sm mt-auto transition-colors" style="background-color: var(--bg-secondary);">
+<footer class="border-t text-sm mt-auto transition-colors" style="background-color: var(--bg-secondary); border-color: var(--border-color); color: var(--text-muted);">
   
   <!-- Optional App Store Badges (PRD 5.9 - controlled by setting) -->
   <% if (typeof appBadgesEnabled !== 'undefined' && appBadgesEnabled) { %>
-  <div class="border-b border-zinc-800/80 py-6 bg-zinc-950/60">
+  <div class="border-b py-6" style="border-color: var(--border-color); background-color: var(--bg-card);">
     <div class="max-w-7xl mx-auto px-4 text-center">
-      <h3 class="text-xs uppercase tracking-widest text-zinc-400 font-bold mb-3">Download the KWIZZ Radio Mobile App</h3>
+      <h3 class="text-xs uppercase tracking-widest font-bold mb-3" style="color: var(--text-muted);">Download the KWIZZ Radio Mobile App</h3>
       <div class="flex items-center justify-center gap-4 flex-wrap">
-        <a href="<%= typeof appStoreUrl !== 'undefined' ? appStoreUrl : '#' %>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-700/80 text-white font-medium text-xs transition-colors">
+        <a href="<%= typeof appStoreUrl !== 'undefined' ? appStoreUrl : '#' %>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border font-medium text-xs transition-colors" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-primary);">
           <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.35-.58.66-1.09 1.73-.95 2.76.99.08 2.06-.51 2.68-1.26z"/></svg>
           <span>App Store</span>
         </a>
-        <a href="<%= typeof googlePlayUrl !== 'undefined' ? googlePlayUrl : '#' %>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-700/80 text-white font-medium text-xs transition-colors">
+        <a href="<%= typeof googlePlayUrl !== 'undefined' ? googlePlayUrl : '#' %>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border font-medium text-xs transition-colors" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-primary);">
           <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.996 1.996 0 0 1-.61-.92L3 2.734c0-.334.084-.65.228-.92h.381zm11.234 11.238l2.091 2.091-11.7 6.75 9.609-8.841zm0-2.104L5.234 2.107l11.7 6.75-2.091 2.091zm1.488 1.488l2.454-1.417c.809-.467.809-1.229 0-1.696L16.331 10.95 14.22 13.06l2.11 2.11z"/></svg>
           <span>Google Play</span>
         </a>
@@ -26,38 +26,39 @@
       <div class="md:col-span-2 space-y-3">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-          <span class="text-white font-black text-lg tracking-wider">KWIZZ RADIO OTTAWA</span>
+          <span class="font-black text-lg tracking-wider" style="color: var(--text-primary);">KWIZZ RADIO</span>
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full badge-gold uppercase">Internet Radio</span>
         </div>
-        <p class="text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-md">
-          Broadcasting authentic Jamaican roots, dancehall, rocksteady, and Caribbean culture directly from Ottawa, Canada to the world 24 hours a day, 7 days a week.
+        <p class="text-xs sm:text-sm leading-relaxed max-w-md" style="color: var(--text-secondary);">
+          Broadcasting authentic Jamaican roots, dancehall, rocksteady, and Caribbean culture directly from Ottawa, Canada to the world 24 hours a day, 7 days a week on worldwide internet radio.
         </p>
-        <p class="text-zinc-500 text-xs">
+        <p class="text-xs" style="color: var(--text-muted);">
           Licensed online webcaster. Music rights and performance licensing respected via platform partner Live365 (SOCAN, BMI, ASCAP, SESAC, SoundExchange).
         </p>
       </div>
 
       <!-- Col 2: Navigation Links -->
       <div>
-        <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-300 mb-3">Explore</h3>
+        <h3 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: var(--text-primary);">Explore</h3>
         <ul class="space-y-2 text-xs">
-          <li><a href="/listen" class="hover:text-amber-400 transition-colors">Listen Live</a></li>
-          <li><a href="/schedule" class="hover:text-amber-400 transition-colors">Weekly Schedule</a></li>
-          <li><a href="/djs" class="hover:text-amber-400 transition-colors">DJs &amp; Presenters</a></li>
-          <li><a href="/events" class="hover:text-amber-400 transition-colors">Station Events</a></li>
-          <li><a href="/request" class="hover:text-amber-400 transition-colors">Request a Song</a></li>
-          <li><a href="/sponsors" class="hover:text-amber-400 transition-colors">Our Sponsors</a></li>
-          <li><a href="/about" class="hover:text-amber-400 transition-colors">About Station</a></li>
+          <li><a href="/listen" class="hover:text-amber-500 transition-colors" style="color: var(--text-secondary);">Listen Live</a></li>
+          <li><a href="/schedule" class="hover:text-amber-500 transition-colors" style="color: var(--text-secondary);">Weekly Schedule</a></li>
+          <li><a href="/djs" class="hover:text-amber-500 transition-colors" style="color: var(--text-secondary);">DJs &amp; Presenters</a></li>
+          <li><a href="/events" class="hover:text-amber-500 transition-colors" style="color: var(--text-secondary);">Station Events</a></li>
+          <li><a href="/request" class="hover:text-amber-500 transition-colors" style="color: var(--text-secondary);">Request a Song</a></li>
+          <li><a href="/sponsors" class="hover:text-amber-500 transition-colors" style="color: var(--text-secondary);">Our Sponsors</a></li>
+          <li><a href="/about" class="hover:text-amber-500 transition-colors" style="color: var(--text-secondary);">About KWIZZ Radio</a></li>
         </ul>
       </div>
 
       <!-- Col 3: Legal & Admin -->
       <div>
-        <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-300 mb-3">Information &amp; Station</h3>
+        <h3 class="text-xs font-bold uppercase tracking-widest mb-3" style="color: var(--text-primary);">Information &amp; Station</h3>
         <ul class="space-y-2 text-xs">
-          <li><a href="/contact" class="hover:text-amber-400 transition-colors">Contact Station</a></li>
-          <li><a href="/privacy" class="hover:text-amber-400 transition-colors">Privacy Policy (PIPEDA/GDPR)</a></li>
-          <li><a href="/terms" class="hover:text-amber-400 transition-colors">Terms of Service</a></li>
-          <li><a href="/admin/login" class="text-zinc-500 hover:text-zinc-300 transition-colors flex items-center gap-1">
+          <li><a href="/contact" class="hover:text-amber-500 transition-colors" style="color: var(--text-secondary);">Contact KWIZZ Radio</a></li>
+          <li><a href="/privacy" class="hover:text-amber-500 transition-colors" style="color: var(--text-secondary);">Privacy Policy (PIPEDA/GDPR)</a></li>
+          <li><a href="/terms" class="hover:text-amber-500 transition-colors" style="color: var(--text-secondary);">Terms of Service</a></li>
+          <li><a href="/admin/login" class="transition-colors flex items-center gap-1 hover:text-amber-500" style="color: var(--text-muted);">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
             <span>Staff Login</span>
           </a></li>
@@ -67,12 +68,12 @@
     </div>
 
     <!-- Bottom Bar -->
-    <div class="mt-8 pt-6 border-t border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+    <div class="mt-8 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs" style="border-color: var(--border-color); color: var(--text-muted);">
       <div>
         &copy; <%= new Date().getFullYear() %> KWIZZ Radio. All Rights Reserved. Ottawa, Ontario, Canada.
       </div>
       <div class="flex items-center gap-4">
-        <span>One Love &bull; One Sound</span>
+        <span>One Love &bull; One Sound &bull; 100% Internet Radio</span>
         <div class="flex items-center gap-1.5">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
           <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
@@ -84,4 +85,3 @@
   
   <div class="reggae-stripe"></div>
 </footer>
-

@@ -3,23 +3,24 @@
 @tailwind utilities;
 
 /* ==============================================================
-   KWIZZ Radio - Premium Reggae & Dancehall Dark Theme
-   Acoustic, Warm, Modern Glassmorphism & Accessible Palette
+   KWIZZ Radio - Premium Reggae & Dancehall Responsive Themes
+   Acoustic Dark Theme & Clean Modern Light Theme (WCAG 2.1 AA)
    ============================================================== */
 
-:root {
+:root, [data-theme="dark"] {
   /* Dark Mode (Default) */
-  --bg-primary: #050507;
-  --bg-secondary: #0c0c10;
-  --bg-card: #121217;
-  --bg-card-hover: #191921;
-  --bg-glass: rgba(18, 18, 23, 0.85);
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.16);
+  --bg-primary: #08080a;
+  --bg-secondary: #0f0f14;
+  --bg-card: #131319;
+  --bg-card-hover: #1b1b22;
+  --bg-card-subtle: #17171e;
+  --bg-glass: rgba(19, 19, 25, 0.85);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.2);
 
   --text-primary: #ffffff;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
+  --text-secondary: #d4d4d8;
+  --text-muted: #a1a1aa;
 
   /* Sophisticated Reggae Accents */
   --reggae-green: #10b981;
@@ -30,25 +31,52 @@
   --reggae-red: #ef4444;
   --reggae-red-glow: rgba(239, 68, 68, 0.25);
 
-  --player-bg: rgba(9, 9, 12, 0.94);
-  --header-bg: rgba(5, 5, 7, 0.88);
+  --player-bg: rgba(13, 13, 17, 0.96);
+  --header-bg: rgba(8, 8, 10, 0.92);
+  --modal-bg: rgba(8, 8, 10, 0.98);
+
+  --input-bg: rgba(24, 24, 27, 0.85);
+  --input-border: rgba(255, 255, 255, 0.14);
+  --input-text: #ffffff;
+  --input-placeholder: #71717a;
+
+  --badge-gold-bg: rgba(245, 158, 11, 0.15);
+  --badge-gold-text: #fbbf24;
+  --badge-gold-border: rgba(245, 158, 11, 0.3);
+
+  --badge-emerald-bg: rgba(16, 185, 129, 0.15);
+  --badge-emerald-text: #34d399;
+  --badge-emerald-border: rgba(16, 185, 129, 0.3);
+
+  --badge-rose-bg: rgba(239, 68, 68, 0.15);
+  --badge-rose-text: #f87171;
+  --badge-rose-border: rgba(239, 68, 68, 0.3);
+
+  --button-secondary-bg: rgba(255, 255, 255, 0.08);
+  --button-secondary-hover: rgba(255, 255, 255, 0.14);
+  --button-secondary-text: #f4f4f5;
+  --button-secondary-border: rgba(255, 255, 255, 0.12);
+
+  --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 [data-theme="light"] {
+  /* Light Mode */
   --bg-primary: #f8fafc;
-  --bg-secondary: #f1f5f9;
+  --bg-secondary: #ffffff;
   --bg-card: #ffffff;
-  --bg-card-hover: #f8fafc;
+  --bg-card-hover: #f1f5f9;
+  --bg-card-subtle: #f8fafc;
   --bg-glass: rgba(255, 255, 255, 0.92);
   --border-color: #e2e8f0;
   --border-hover: #cbd5e1;
 
   --text-primary: #0f172a;
-  --text-secondary: #475569;
+  --text-secondary: #334155;
   --text-muted: #64748b;
 
-  --reggae-green: #059669;
-  --reggae-green-glow: rgba(5, 150, 105, 0.15);
+  --reggae-green: #047857;
+  --reggae-green-glow: rgba(4, 120, 87, 0.15);
   --reggae-gold: #d97706;
   --reggae-gold-hover: #b45309;
   --reggae-gold-glow: rgba(217, 119, 6, 0.2);
@@ -57,6 +85,31 @@
 
   --player-bg: rgba(255, 255, 255, 0.96);
   --header-bg: rgba(255, 255, 255, 0.94);
+  --modal-bg: rgba(255, 255, 255, 0.98);
+
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+  --input-text: #0f172a;
+  --input-placeholder: #94a3b8;
+
+  --badge-gold-bg: rgba(245, 158, 11, 0.12);
+  --badge-gold-text: #b45309;
+  --badge-gold-border: rgba(245, 158, 11, 0.28);
+
+  --badge-emerald-bg: rgba(16, 185, 129, 0.12);
+  --badge-emerald-text: #047857;
+  --badge-emerald-border: rgba(16, 185, 129, 0.28);
+
+  --badge-rose-bg: rgba(239, 68, 68, 0.12);
+  --badge-rose-text: #b91c1c;
+  --badge-rose-border: rgba(239, 68, 68, 0.28);
+
+  --button-secondary-bg: #f1f5f9;
+  --button-secondary-hover: #e2e8f0;
+  --button-secondary-text: #1e293b;
+  --button-secondary-border: #cbd5e1;
+
+  --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
 }
 
 *, *::before, *::after {
@@ -83,30 +136,49 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   outline-offset: 3px;
 }
 
-/* Elegant, refined Reggae accent line */
+/* Elegant Reggae accent line */
 .reggae-stripe {
   height: 3px;
   background: linear-gradient(90deg, #10b981 0%, #f59e0b 50%, #ef4444 100%);
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .reggae-gradient-text {
+  background: linear-gradient(135deg, #10b981 0%, #f59e0b 50%, #ef4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="dark"] .reggae-gradient-text {
   background: linear-gradient(135deg, #34d399 0%, #fbbf24 50%, #f87171 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Glassmorphism card surfaces */
+/* Glassmorphism & Surface card styling */
 .kwizz-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 1.25rem;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.25s ease;
 }
 
 .kwizz-card:hover {
   border-color: var(--border-hover);
   background-color: var(--bg-card-hover);
+}
+
+/* Hero Section Custom Gradient Card */
+[data-theme="dark"] .hero-card {
+  background: linear-gradient(to bottom, rgba(24, 24, 27, 0.85) 0%, rgba(9, 9, 11, 0.95) 60%, #000000 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .hero-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+  border-color: #e2e8f0;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.06);
 }
 
 /* Equalizer Bars Animation */
@@ -143,7 +215,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 /* Primary Brand Gold Buttons */
 .btn-primary-gold {
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  color: #09090b;
+  color: #09090b !important;
   font-weight: 800;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25);
@@ -169,50 +241,53 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .day-tab-inactive {
-  background-color: rgba(24, 24, 27, 0.6);
-  color: #a1a1aa !important;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--button-secondary-bg);
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-color);
 }
 
 .day-tab-inactive:hover {
-  color: #ffffff !important;
-  background-color: rgba(39, 39, 42, 0.8);
-  border-color: rgba(255, 255, 255, 0.16);
+  color: var(--text-primary) !important;
+  background-color: var(--button-secondary-hover);
+  border-color: var(--border-hover);
 }
 
 /* Form inputs & Focus States */
 .kwizz-input {
-  background-color: rgba(24, 24, 27, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--input-text);
   border-radius: 0.75rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.kwizz-input::placeholder {
+  color: var(--input-placeholder);
 }
 
 .kwizz-input:focus {
   outline: none;
   border-color: #f59e0b;
   box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
-  background-color: rgba(24, 24, 27, 0.95);
 }
 
 /* Badges */
 .badge-gold {
-  background-color: rgba(245, 158, 11, 0.12);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.28);
+  background-color: var(--badge-gold-bg);
+  color: var(--badge-gold-text);
+  border: 1px solid var(--badge-gold-border);
 }
 
 .badge-emerald {
-  background-color: rgba(16, 185, 129, 0.12);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.28);
+  background-color: var(--badge-emerald-bg);
+  color: var(--badge-emerald-text);
+  border: 1px solid var(--badge-emerald-border);
 }
 
 .badge-rose {
-  background-color: rgba(239, 68, 68, 0.12);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.28);
+  background-color: var(--badge-rose-bg);
+  color: var(--badge-rose-text);
+  border: 1px solid var(--badge-rose-border);
 }
 
 /* Custom Scrollbars */
@@ -224,10 +299,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   background: var(--bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #71717a;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #a1a1aa;
 }
-

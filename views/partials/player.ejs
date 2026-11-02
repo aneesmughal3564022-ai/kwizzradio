@@ -6,7 +6,7 @@
     
     <!-- Track Metadata & Artwork -->
     <div class="flex items-center gap-3 sm:gap-3.5 min-w-0 max-w-[48%] sm:max-w-xs md:max-w-sm">
-      <div class="relative w-12 h-12 sm:w-13 sm:h-13 shrink-0 rounded-xl overflow-hidden bg-zinc-900 border border-white/10 shadow-md">
+      <div class="relative w-12 h-12 sm:w-13 sm:h-13 shrink-0 rounded-xl overflow-hidden border shadow-md" style="background-color: var(--bg-card); border-color: var(--border-color);">
         <img id="player-artwork" src="/images/fallback-album.svg" alt="Now Playing Artwork" class="w-full h-full object-cover">
         <div id="player-equalizer" class="absolute inset-0 bg-black/60 hidden items-center justify-center gap-0.5">
           <span class="equalizer-bar" style="height: 12px;"></span>
@@ -18,14 +18,14 @@
 
       <div class="min-w-0 flex-1">
         <div class="flex items-center gap-1.5 mb-0.5">
-          <span id="player-status-badge" class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded-md text-[9px] font-bold uppercase tracking-wider bg-zinc-800 text-zinc-400">
-            <span class="w-1.5 h-1.5 rounded-full bg-zinc-500"></span>
+          <span id="player-status-badge" class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded-md text-[9px] font-bold uppercase tracking-wider" style="background-color: var(--button-secondary-bg); color: var(--text-muted); border: 1px solid var(--border-color);">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
             <span id="player-status-text">Ready</span>
           </span>
-          <span class="text-[10px] text-zinc-500 font-medium hidden sm:inline">&bull; Ottawa Live</span>
+          <span class="text-[10px] font-medium hidden sm:inline" style="color: var(--text-muted);">&bull; Internet Radio</span>
         </div>
-        <h4 id="player-title" class="text-xs sm:text-sm font-black text-white truncate" style="color: var(--text-primary);">KWIZZ Radio Live</h4>
-        <p id="player-artist" class="text-[11px] sm:text-xs text-amber-400 font-semibold truncate">Ottawa's Reggae &amp; Dancehall</p>
+        <h4 id="player-title" class="text-xs sm:text-sm font-black truncate" style="color: var(--text-primary);">KWIZZ Radio Live</h4>
+        <p id="player-artist" class="text-[11px] sm:text-xs text-amber-500 font-semibold truncate">Ottawa &bull; 24/7 Live Stream</p>
       </div>
     </div>
 
@@ -50,28 +50,28 @@
           </span>
         </button>
       </div>
-      <div id="player-status-detail" class="text-[10px] text-zinc-400 mt-1 hidden text-center"></div>
+      <div id="player-status-detail" class="text-[10px] mt-1 hidden text-center" style="color: var(--text-muted);"></div>
     </div>
 
     <!-- Right Controls: Volume, Share, Expand -->
     <div class="flex items-center gap-2 sm:gap-3 shrink-0">
       <!-- Volume Slider (Desktop) -->
       <div class="hidden md:flex items-center gap-2">
-        <button id="player-mute-btn" type="button" aria-label="Mute or Unmute Audio" class="p-1.5 text-zinc-400 hover:text-white transition-colors">
+        <button id="player-mute-btn" type="button" aria-label="Mute or Unmute Audio" class="p-1.5 transition-colors" style="color: var(--text-muted);" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">
           <svg id="volume-icon-high" class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
           <svg id="volume-icon-muted" class="w-4 h-4 fill-current hidden text-rose-500" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
         </button>
         <label for="player-volume-slider" class="sr-only">Volume</label>
-        <input id="player-volume-slider" type="range" min="0" max="1" step="0.05" value="0.9" aria-label="Volume Slider" class="w-20 accent-amber-400 h-1.5 bg-zinc-800 rounded-lg cursor-pointer">
+        <input id="player-volume-slider" type="range" min="0" max="1" step="0.05" value="0.9" aria-label="Volume Slider" class="w-20 accent-amber-500 h-1.5 rounded-lg cursor-pointer" style="background-color: var(--border-color);">
       </div>
 
       <!-- Share Button -->
-      <button id="player-share-btn" type="button" aria-label="Share Stream" title="Share Stream" class="p-2 text-zinc-400 hover:text-amber-400 transition-colors rounded-xl bg-white/5 hover:bg-white/10">
+      <button id="player-share-btn" type="button" aria-label="Share Stream" title="Share Stream" class="p-2 transition-colors rounded-xl border" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-muted);" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">
         <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
       </button>
 
       <!-- Expand Mobile Player Modal Button -->
-      <button id="player-expand-btn" type="button" aria-label="Expand player view" class="sm:hidden p-2 text-zinc-400 hover:text-white transition-colors rounded-xl bg-white/5">
+      <button id="player-expand-btn" type="button" aria-label="Expand player view" class="sm:hidden p-2 transition-colors rounded-xl border" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-muted);">
         <svg class="w-4 h-4 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
       </button>
     </div>
@@ -81,36 +81,36 @@
 </div>
 
 <!-- Mobile Modal View -->
-<div id="mobile-player-modal" class="fixed inset-0 z-50 bg-zinc-950/98 backdrop-blur-2xl flex flex-col justify-between p-6 hidden sm:hidden transition-all duration-300">
+<div id="mobile-player-modal" class="fixed inset-0 z-50 backdrop-blur-2xl flex flex-col justify-between p-6 hidden sm:hidden transition-all duration-300" style="background-color: var(--modal-bg); color: var(--text-primary);">
   <div class="flex items-center justify-between">
     <div class="flex items-center gap-2">
       <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></div>
-      <span class="text-xs font-black tracking-widest text-emerald-400">KWIZZ LIVE OTTAWA</span>
+      <span class="text-xs font-black tracking-widest text-emerald-500">KWIZZ RADIO LIVE</span>
     </div>
-    <button id="mobile-player-close-btn" class="p-2 text-zinc-400 hover:text-white" aria-label="Close full-screen player">
+    <button id="mobile-player-close-btn" class="p-2" style="color: var(--text-muted);" aria-label="Close full-screen player">
       <svg class="w-6 h-6 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
     </button>
   </div>
 
   <div class="my-auto flex flex-col items-center text-center">
-    <div class="w-64 h-64 rounded-3xl overflow-hidden shadow-2xl border border-white/10 mb-6 bg-zinc-900">
+    <div class="w-64 h-64 rounded-3xl overflow-hidden shadow-2xl border mb-6" style="background-color: var(--bg-card); border-color: var(--border-color);">
       <img id="mobile-modal-artwork" src="/images/fallback-album.svg" alt="Now Playing Track" class="w-full h-full object-cover">
     </div>
-    <h2 id="mobile-modal-title" class="text-2xl font-black text-white mb-1">KWIZZ Radio Live</h2>
-    <p id="mobile-modal-artist" class="text-base text-amber-400 font-semibold mb-4">Ottawa's Reggae &amp; Dancehall</p>
-    <div id="mobile-modal-status" class="px-3 py-1 rounded-full text-xs font-semibold bg-white/5 border border-white/10 text-zinc-300">
-      Live Stream Ready
+    <h2 id="mobile-modal-title" class="text-2xl font-black mb-1" style="color: var(--text-primary);">KWIZZ Radio Live</h2>
+    <p id="mobile-modal-artist" class="text-base text-amber-500 font-semibold mb-4">Ottawa Reggae &amp; Dancehall</p>
+    <div id="mobile-modal-status" class="px-3 py-1 rounded-full text-xs font-semibold badge-gold">
+      Internet Radio Stream Ready
     </div>
   </div>
 
   <div class="space-y-6">
     <div class="flex items-center justify-center">
-      <button id="mobile-modal-play-btn" class="btn-primary-gold w-18 h-18 rounded-full flex items-center justify-center">
+      <button id="mobile-modal-play-btn" class="btn-primary-gold w-18 h-18 rounded-full flex items-center justify-center cursor-pointer">
         <svg class="w-8 h-8 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       </button>
     </div>
-    <div class="text-center text-xs text-zinc-500">
-      KWIZZ Radio &bull; Authentic Sounds of the Caribbean
+    <div class="text-center text-xs" style="color: var(--text-muted);">
+      KWIZZ Radio &bull; 24/7 Worldwide Internet Radio
     </div>
   </div>
 </div>

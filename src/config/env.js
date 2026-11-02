@@ -14,7 +14,7 @@ const envSchema = z.object({
   APP_URL: z.string().default('http://localhost:3000'),
 
   STATION_NAME: z.string().default('KWIZZ Radio'),
-  STATION_TAGLINE: z.string().default("Ottawa's Premier Reggae & Dancehall Station"),
+  STATION_TAGLINE: z.string().default("Ottawa's Premier Reggae & Dancehall Internet Radio"),
   STATION_TIMEZONE: z.string().default('America/Toronto'),
   DEFAULT_STREAM_URL: z.string().default('https://streaming.live365.com/b72076_128k.mp3'),
   LIVE365_STATION_ID: z.string().default('a72076'),

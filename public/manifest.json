@@ -1,12 +1,12 @@
 {
-  "name": "KWIZZ Radio Ottawa",
-  "short_name": "KWIZZ Radio",
-  "description": "Ottawa's Premier Reggae & Dancehall Online Station",
+  "name": "KWIZZ Radio",
+  "short_name": "KWIZZ",
+  "description": "KWIZZ Radio - Ottawa's Premier Reggae & Dancehall Internet Radio Station",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#08080a",
+  "theme_color": "#08080a",
   "icons": [
     {
       "src": "/images/fallback-album.svg",
@@ -16,4 +16,3 @@
     }
   ]
 }
-

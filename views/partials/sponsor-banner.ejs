@@ -1,23 +1,22 @@
 <%# Sponsor Banner Partial - non-blocking ads that never interrupt the stream %>
 <% if (typeof sponsor !== 'undefined' && sponsor) { %>
 <aside class="sponsor-slot my-4 mx-auto max-w-5xl px-4" data-sponsor-id="<%= sponsor.id %>" aria-label="Sponsored Partner">
-  <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+  <div class="p-3 rounded-xl border flex flex-col sm:flex-row items-center justify-between gap-3 text-xs" style="background-color: var(--bg-card); border-color: var(--border-color);">
     <div class="flex items-center gap-3">
-      <span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-zinc-800 text-zinc-400 border border-zinc-700">
+      <span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider badge-gold">
         Community Sponsor
       </span>
-      <span class="text-zinc-300 font-semibold"><%= sponsor.name %></span>
+      <span class="font-semibold" style="color: var(--text-primary);"><%= sponsor.name %></span>
     </div>
 
     <div class="flex items-center gap-3">
       <% if (sponsor.logoUrl) { %>
       <img src="<%= sponsor.logoUrl %>" alt="<%= sponsor.name %>" class="h-6 object-contain max-w-[120px]" loading="lazy">
       <% } %>
-      <a href="/api/sponsors/<%= sponsor.id %>/click?target=<%= encodeURIComponent(sponsor.targetUrl) %>" target="_blank" rel="noopener sponsored" class="inline-flex items-center gap-1 font-bold text-amber-400 hover:text-amber-300 transition-colors">
+      <a href="/api/sponsors/<%= sponsor.id %>/click?target=<%= encodeURIComponent(sponsor.targetUrl) %>" target="_blank" rel="noopener sponsored" class="inline-flex items-center gap-1 font-bold text-amber-500 hover:text-amber-400 transition-colors">
         Visit Partner &rarr;
       </a>
     </div>
   </div>
 </aside>
 <% } %>
-

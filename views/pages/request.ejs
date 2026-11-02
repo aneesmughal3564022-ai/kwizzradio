@@ -1,19 +1,19 @@
 <!-- KWIZZ Radio Song Request Page -->
 <div class="space-y-8 max-w-2xl mx-auto">
-  <div class="text-center space-y-2 border-b border-zinc-800/80 pb-6">
+  <div class="text-center space-y-2 border-b pb-6" style="border-color: var(--border-color);">
     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-gold text-xs font-semibold">
       <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-      <span>DIRECT TO DJ INBOX</span>
+      <span>DIRECT TO DJ INBOX &bull; KWIZZ RADIO</span>
     </div>
-    <h1 class="text-3xl sm:text-4xl font-black text-white" style="color: var(--text-primary);">
-      Request a Song
+    <h1 class="text-3xl sm:text-4xl font-black" style="color: var(--text-primary);">
+      Request a Song on KWIZZ Radio
     </h1>
-    <p class="text-zinc-400 text-sm">
-      Got a reggae anthem, lovers rock classic, or dancehall banger you want to hear? Tell us below.
+    <p class="text-sm" style="color: var(--text-muted);">
+      Got a reggae anthem, lovers rock classic, or dancehall banger you want to hear? Tell our studio DJs below.
     </p>
   </div>
 
-  <form id="song-request-form" class="space-y-5 kwizz-card p-6 sm:p-8 shadow-xl" style="background-color: var(--bg-card);" novalidate>
+  <form id="song-request-form" class="space-y-5 kwizz-card p-6 sm:p-8 shadow-xl" style="background-color: var(--bg-card); border-color: var(--border-color);" novalidate>
     <!-- Spam Protection Honeypot Field (Hidden from real users and screen readers) -->
     <div class="hidden" aria-hidden="true">
       <label for="hp_website">Leave this field blank</label>
@@ -25,7 +25,7 @@
 
     <!-- Artist Name -->
     <div>
-      <label for="req-artist" class="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-2">
+      <label for="req-artist" class="block text-xs font-bold uppercase tracking-wider mb-2" style="color: var(--text-primary);">
         Artist Name <span class="text-rose-500">*</span>
       </label>
       <input 
@@ -34,12 +34,12 @@
         name="artist" 
         required 
         placeholder="e.g. Beres Hammond, Chronixx, Koffee"
-        class="w-full px-4 py-3 rounded-xl kwizz-input text-white placeholder-zinc-500 text-sm">
+        class="w-full px-4 py-3 rounded-xl kwizz-input text-sm">
     </div>
 
     <!-- Song Title -->
     <div>
-      <label for="req-title" class="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-2">
+      <label for="req-title" class="block text-xs font-bold uppercase tracking-wider mb-2" style="color: var(--text-primary);">
         Song Title <span class="text-rose-500">*</span>
       </label>
       <input 
@@ -48,12 +48,12 @@
         name="songTitle" 
         required 
         placeholder="e.g. Rockaway, Toast, Jamrock"
-        class="w-full px-4 py-3 rounded-xl kwizz-input text-white placeholder-zinc-500 text-sm">
+        class="w-full px-4 py-3 rounded-xl kwizz-input text-sm">
     </div>
 
     <!-- Requester Name -->
     <div>
-      <label for="req-name" class="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-2">
+      <label for="req-name" class="block text-xs font-bold uppercase tracking-wider mb-2" style="color: var(--text-primary);">
         Your Name / Handle <span class="text-rose-500">*</span>
       </label>
       <input 
@@ -62,33 +62,33 @@
         name="requestedBy" 
         required 
         placeholder="e.g. Ras Dave from Ottawa West"
-        class="w-full px-4 py-3 rounded-xl kwizz-input text-white placeholder-zinc-500 text-sm">
+        class="w-full px-4 py-3 rounded-xl kwizz-input text-sm">
     </div>
 
     <!-- Dedication / Shoutout -->
     <div>
-      <label for="req-dedication" class="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-2">
-        Dedication / Shoutout <span class="text-zinc-500 font-normal">(Optional)</span>
+      <label for="req-dedication" class="block text-xs font-bold uppercase tracking-wider mb-2" style="color: var(--text-primary);">
+        Dedication / Shoutout <span class="font-normal" style="color: var(--text-muted);">(Optional)</span>
       </label>
       <textarea 
         id="req-dedication" 
         name="dedication" 
         rows="2" 
         placeholder="Shoutout to the crew celebrating this weekend in Ottawa..."
-        class="w-full px-4 py-3 rounded-xl kwizz-input text-white placeholder-zinc-500 text-sm resize-none"></textarea>
+        class="w-full px-4 py-3 rounded-xl kwizz-input text-sm resize-none"></textarea>
     </div>
 
     <!-- Email Address -->
     <div>
-      <label for="req-email" class="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-2">
-        Your Email <span class="text-zinc-500 font-normal">(Optional, if you'd like a notification)</span>
+      <label for="req-email" class="block text-xs font-bold uppercase tracking-wider mb-2" style="color: var(--text-primary);">
+        Your Email <span class="font-normal" style="color: var(--text-muted);">(Optional, if you'd like a notification)</span>
       </label>
       <input 
         type="email" 
         id="req-email" 
         name="email" 
         placeholder="you@example.com"
-        class="w-full px-4 py-3 rounded-xl kwizz-input text-white placeholder-zinc-500 text-sm">
+        class="w-full px-4 py-3 rounded-xl kwizz-input text-sm">
     </div>
 
     <!-- CASL Consent Checkbox -->
@@ -97,8 +97,8 @@
         type="checkbox" 
         id="req-consent" 
         name="newsletterConsent" 
-        class="mt-1 w-4 h-4 rounded border-zinc-700 text-amber-500 focus:ring-amber-400 bg-zinc-900">
-      <label for="req-consent" class="text-xs text-zinc-400 leading-relaxed cursor-pointer">
+        class="mt-1 w-4 h-4 rounded text-amber-500 focus:ring-amber-400 cursor-pointer">
+      <label for="req-consent" class="text-xs leading-relaxed cursor-pointer" style="color: var(--text-secondary);">
         (Optional) Send me occasional updates on KWIZZ Radio events and special shows. (CASL compliant, unsubscribe anytime).
       </label>
     </div>
@@ -110,7 +110,7 @@
     <button 
       type="submit" 
       id="request-submit-btn" 
-      class="w-full py-3.5 rounded-xl btn-primary-gold text-sm uppercase tracking-wider flex items-center justify-center gap-2">
+      class="w-full py-3.5 rounded-xl btn-primary-gold text-sm uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer">
       <span class="btn-text">Send Song Request</span>
       <span class="btn-spinner hidden">
         <svg class="w-5 h-5 animate-spin text-black" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -120,4 +120,3 @@
 </div>
 
 <script src="/js/forms.js"></script>
-
