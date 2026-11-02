@@ -9,37 +9,11 @@
   <meta name="apple-mobile-web-app-title" content="KWIZZ">
   <meta name="application-name" content="KWIZZ">
 
-  <script>
-    window.tailwind = {
-      darkMode: ['class', '[data-theme="dark"]'],
-      theme: {
-        extend: {
-          colors: {
-            reggae: {
-              green: '#10b981',
-              gold: '#f59e0b',
-              red: '#ef4444'
-            }
-          }
-        }
-      }
-    };
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/css/tailwind.css">
+  <!-- Compiled Tailwind & Reggae Theme Stylesheet -->
+  <link rel="stylesheet" href="/css/tailwind.css?v=2">
 
-  <script>
-    (function() {
-      try {
-        const saved = localStorage.getItem('kwizz_radio_theme');
-        if (saved === 'light') {
-          document.documentElement.setAttribute('data-theme', 'light');
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-        }
-      } catch (e) {}
-    })();
-  </script>
+  <!-- Immediate Theme Initializer & Controller -->
+  <script src="/js/theme.js?v=2"></script>
 </head>
 <body class="bg-black text-white min-h-screen flex flex-col antialiased" style="background-color: var(--bg-primary); color: var(--text-primary);">
   

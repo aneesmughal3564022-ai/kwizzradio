@@ -25,25 +25,11 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@kwizzradio">
 
-  <!-- Tailwind Configuration + CDN + Custom Stylesheet -->
-  <script>
-    window.tailwind = {
-      darkMode: ['class', '[data-theme="dark"]'],
-      theme: {
-        extend: {
-          colors: {
-            reggae: {
-              green: '#10b981',
-              gold: '#f59e0b',
-              red: '#ef4444'
-            }
-          }
-        }
-      }
-    };
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/css/tailwind.css">
+  <!-- Compiled Tailwind & Reggae Theme Stylesheet -->
+  <link rel="stylesheet" href="/css/tailwind.css?v=2">
+
+  <!-- Immediate Theme Initializer & Controller (Synchronous in <head> to prevent flash and ensure instant toggle availability) -->
+  <script src="/js/theme.js?v=2"></script>
 
   <!-- JSON-LD Structured Data for RadioStation -->
   <script type="application/ld+json">
@@ -65,24 +51,6 @@
       "name": "KWIZZ Radio"
     }
   }
-  </script>
-
-  <!-- Prevent Theme Flash -->
-  <script>
-    (function() {
-      try {
-        const saved = localStorage.getItem('kwizz_radio_theme');
-        if (saved === 'light') {
-          document.documentElement.setAttribute('data-theme', 'light');
-          document.documentElement.classList.add('light');
-          document.documentElement.classList.remove('dark');
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          document.documentElement.classList.add('dark');
-          document.documentElement.classList.remove('light');
-        }
-      } catch (e) {}
-    })();
   </script>
 </head>
 <body class="flex flex-col min-h-screen antialiased selection:bg-amber-400 selection:text-black transition-colors duration-200">
@@ -113,7 +81,6 @@
   <%- include('../partials/cookie-banner') %>
 
   <!-- Scripts -->
-  <script src="/js/theme.js"></script>
   <script src="/js/player.js"></script>
   <script src="/js/navigation.js"></script>
   <script src="/js/sse-client.js"></script>

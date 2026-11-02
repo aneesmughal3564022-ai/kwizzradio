@@ -1,7 +1,7 @@
 // KWIZZ Radio Service Worker
 // Caches static assets only; NEVER caches the live stream or dynamic SSE
 
-const CACHE_NAME = 'kwizz-static-v1';
+const CACHE_NAME = 'kwizz-static-v2';
 const STATIC_ASSETS = [
   '/',
   '/css/tailwind.css',

@@ -56,8 +56,8 @@
         </div>
 
         <!-- Theme Toggle Button -->
-        <button id="theme-toggle-btn" onclick="toggleTheme()" class="theme-toggle-btn p-2 rounded-xl border transition-all focus:ring-2 focus:ring-amber-400 cursor-pointer" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-primary);" aria-label="Switch between light and dark theme" title="Toggle theme">
-          <span class="theme-icon flex items-center justify-center">
+        <button id="theme-toggle-btn" type="button" onclick="window.toggleTheme && window.toggleTheme()" class="theme-toggle-btn p-2 rounded-xl border transition-all focus:ring-2 focus:ring-amber-400 cursor-pointer pointer-events-auto" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-primary);" aria-label="Switch between light and dark theme" title="Toggle theme">
+          <span class="theme-icon flex items-center justify-center pointer-events-none">
             <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
@@ -86,6 +86,16 @@
     <a href="/sponsors" class="block px-3 py-2 rounded-xl text-sm font-semibold transition-colors hover:bg-amber-400/10 hover:text-amber-500" style="color: var(--text-primary);">Sponsors</a>
     <a href="/contact" class="block px-3 py-2 rounded-xl text-sm font-semibold transition-colors hover:bg-amber-400/10 hover:text-amber-500" style="color: var(--text-primary);">Contact</a>
     <a href="/about" class="block px-3 py-2 rounded-xl text-sm font-semibold transition-colors hover:bg-amber-400/10 hover:text-amber-500" style="color: var(--text-primary);">About KWIZZ Radio</a>
+    <div class="pt-2 border-t mt-2" style="border-color: var(--border-color);">
+      <button type="button" onclick="window.toggleTheme && window.toggleTheme()" class="theme-toggle-btn w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-semibold transition-colors hover:bg-amber-400/10 hover:text-amber-500 cursor-pointer" style="color: var(--text-primary);">
+        <span>Toggle Light / Dark Theme</span>
+        <span class="theme-icon flex items-center justify-center pointer-events-none">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </span>
+      </button>
+    </div>
   </div>
 </header>
 <script>
