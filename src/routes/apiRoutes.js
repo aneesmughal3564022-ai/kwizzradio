@@ -24,6 +24,7 @@ router.get('/', (req, res) => {
 router.get('/now-playing', playerController.getNowPlaying);
 router.get('/recent', playerController.getRecentTracks);
 router.get('/now-playing/stream', playerController.streamNowPlaying);
+router.get('/stream.m3u', playerController.getM3uPlaylist);
 
 // Song Requests & Contact Forms
 router.post('/requests', formLimiter, requestController.submitSongRequest);

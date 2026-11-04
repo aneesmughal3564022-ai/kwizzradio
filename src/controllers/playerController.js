@@ -38,6 +38,16 @@ const getRecentTracks = async (req, res, next) => {
 };
 
 /**
+ * GET /api/stream.m3u
+ * Downloadable M3U playlist file for VLC, Winamp, iTunes, and internet radio players
+ */
+const getM3uPlaylist = (req, res) => {
+  res.setHeader('Content-Type', 'audio/x-mpegurl');
+  res.setHeader('Content-Disposition', 'attachment; filename="kwizzradio.m3u"');
+  res.send(`#EXTM3U\n#EXTINF:-1,KWIZZ Radio - 24/7 Internet Radio\n${env.DEFAULT_STREAM_URL}\n`);
+};
+
+/**
  * GET /api/now-playing/stream
  * Server-Sent Events endpoint for real-time track updates
  */
@@ -73,6 +83,6 @@ const streamNowPlaying = (req, res) => {
 module.exports = {
   getNowPlaying,
   getRecentTracks,
+  getM3uPlaylist,
   streamNowPlaying
 };
-

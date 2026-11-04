@@ -49,6 +49,7 @@ self.addEventListener('fetch', (event) => {
     url.pathname.includes('/stream') ||
     url.pathname.startsWith('/admin') ||
     url.hostname.includes('live365') ||
+    url.hostname.includes('cdnstream') ||
     event.request.method !== 'GET'
   ) {
     // Pure network pass-through

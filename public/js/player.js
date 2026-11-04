@@ -267,6 +267,34 @@
       if (heroArtist) heroArtist.textContent = artist;
       if (heroArt) heroArt.src = artwork;
 
+      // Update Listen Lounge page elements if present
+      const listenTitle = document.getElementById('listen-page-title');
+      const listenArtist = document.getElementById('listen-page-artist');
+      const listenArt = document.getElementById('listen-page-art');
+      if (listenTitle) listenTitle.textContent = title;
+      if (listenArtist) listenArtist.textContent = artist;
+      if (listenArt) listenArt.src = artwork;
+
+      // Update music purchase & stream links
+      const appleLinks = document.querySelectorAll('#hero-apple-music, #listen-apple-music');
+      appleLinks.forEach(link => {
+        if (track.appleMusicUrl) {
+          link.href = track.appleMusicUrl;
+          link.classList.remove('hidden');
+        } else {
+          link.classList.add('hidden');
+        }
+      });
+      const amazonLinks = document.querySelectorAll('#hero-amazon-music, #listen-amazon-music');
+      amazonLinks.forEach(link => {
+        if (track.amazonStoreUrl) {
+          link.href = track.amazonStoreUrl;
+          link.classList.remove('hidden');
+        } else {
+          link.classList.add('hidden');
+        }
+      });
+
       // Update Media Session API
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
@@ -376,12 +404,27 @@
             // Fallback: Copy link to clipboard
             try {
               await navigator.clipboard.writeText(window.location.origin);
-              alert('KWIZZ Radio stream link copied to clipboard!');
+              this.showToast('KWIZZ Radio stream link copied to clipboard!');
               if (window.kwizzAnalytics) window.kwizzAnalytics.track('share_click', { method: 'clipboard' });
             } catch (e) {}
           }
         });
       }
+    }
+
+    showToast(message) {
+      let toast = document.getElementById('player-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'player-toast';
+        toast.className = 'fixed top-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-zinc-950/95 border border-amber-400 shadow-2xl transition-all duration-300 opacity-0 pointer-events-none';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 3000);
     }
   }
 

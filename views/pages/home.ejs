@@ -37,8 +37,8 @@
             <span>Start Listening Live</span>
           </button>
 
-          <a href="/schedule" class="px-5 py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider border transition-colors" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-primary);">
-            View Schedule
+          <a href="/listen" class="px-5 py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider border transition-colors hover:border-amber-400" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-primary);">
+            Listening Lounge &nearr;
           </a>
         </div>
 
@@ -54,7 +54,7 @@
           </div>
           <div>
             <div class="font-black text-base sm:text-lg text-emerald-500">Worldwide</div>
-            <div class="text-xs" style="color: var(--text-muted);">No Tuner / FM Needed</div>
+            <div class="text-xs" style="color: var(--text-muted);">Live on Live365</div>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
 
           <div class="flex items-center gap-4">
             <div class="w-20 h-20 rounded-2xl overflow-hidden border shrink-0 shadow-md" style="background-color: var(--bg-card); border-color: var(--border-color);">
-              <img id="hero-track-art" src="<%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.artwork ? liveTrack.artwork : '/images/fallback-album.svg' %>" alt="Now Playing Album" class="w-full h-full object-cover">
+              <img id="hero-track-art" src="<%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.artwork ? liveTrack.artwork : '/images/fallback-album.svg' %>" alt="Now Playing Album" class="w-full h-full object-cover" onerror="this.src='/images/fallback-album.svg'">
             </div>
             <div class="min-w-0 flex-1">
               <h3 id="hero-track-title" class="text-lg font-black truncate" style="color: var(--text-primary);">
@@ -82,6 +82,20 @@
                 <%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.artist ? liveTrack.artist : "Ottawa's Reggae & Dancehall" %>
               </p>
               <p class="text-xs mt-1" style="color: var(--text-muted);">Live from Studio Ottawa &bull; Internet Radio</p>
+              
+              <!-- Track links -->
+              <div id="hero-music-links" class="flex items-center gap-2 pt-2">
+                <% if (typeof liveTrack !== 'undefined' && liveTrack && liveTrack.appleMusicUrl) { %>
+                  <a id="hero-apple-music" href="<%= liveTrack.appleMusicUrl %>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border transition-colors hover:border-amber-400" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-primary);">
+                    <span>Apple Music &nearr;</span>
+                  </a>
+                <% } %>
+                <% if (typeof liveTrack !== 'undefined' && liveTrack && liveTrack.amazonStoreUrl) { %>
+                  <a id="hero-amazon-music" href="<%= liveTrack.amazonStoreUrl %>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border transition-colors hover:border-amber-400" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-primary);">
+                    <span>Amazon &nearr;</span>
+                  </a>
+                <% } %>
+              </div>
             </div>
           </div>
 
@@ -89,19 +103,70 @@
           <div class="grid grid-cols-2 gap-3 pt-3 border-t text-xs" style="border-color: var(--border-color);">
             <div class="p-3 rounded-xl border" style="background-color: var(--bg-card); border-color: var(--border-color);">
               <span class="text-[10px] font-black uppercase text-amber-500 block mb-0.5">On Now</span>
-              <span class="font-bold truncate block" style="color: var(--text-primary);">Ottawa Reggae Morning</span>
-              <span class="text-[11px]" style="color: var(--text-muted);">with DJ Roots</span>
+              <span class="font-bold truncate block" style="color: var(--text-primary);">
+                <%= typeof onNow !== 'undefined' && onNow && onNow.title ? onNow.title : (typeof stationMetadata !== 'undefined' && stationMetadata && stationMetadata.liveDjOn ? 'Live DJ Broadcasting' : 'KWIZZ AutoDJ 24/7') %>
+              </span>
+              <span class="text-[11px] truncate block" style="color: var(--text-muted);">
+                <%= typeof onNow !== 'undefined' && onNow && onNow.dj ? 'with ' + onNow.dj.name : (typeof stationMetadata !== 'undefined' && stationMetadata && stationMetadata.genres ? stationMetadata.genres.slice(0, 2).join(' • ') : 'Reggae Vibes') %>
+              </span>
             </div>
             <div class="p-3 rounded-xl border" style="background-color: var(--bg-card); border-color: var(--border-color);">
               <span class="text-[10px] font-black uppercase block mb-0.5" style="color: var(--text-muted);">Up Next</span>
-              <span class="font-bold truncate block" style="color: var(--text-primary);">Dancehall Fever</span>
-              <span class="text-[11px]" style="color: var(--text-muted);">with Empress Tanya</span>
+              <span class="font-bold truncate block" style="color: var(--text-primary);">
+                <%= typeof upNext !== 'undefined' && upNext && upNext.title ? upNext.title : 'Caribbean Island Heat' %>
+              </span>
+              <span class="text-[11px] truncate block" style="color: var(--text-muted);">
+                <%= typeof upNext !== 'undefined' && upNext && upNext.dj ? 'with ' + upNext.dj.name : 'DJ Rotation' %>
+              </span>
             </div>
           </div>
 
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- Recently Played on KWIZZ Radio Live Stream -->
+  <section class="space-y-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <h2 class="text-lg sm:text-xl font-black tracking-tight" style="color: var(--text-primary);">
+          Recently Played on KWIZZ Radio
+        </h2>
+      </div>
+      <a href="/listen" class="text-xs font-bold text-amber-500 hover:underline flex items-center gap-1">
+        <span>Full Stream Lounge &amp; History</span> &rarr;
+      </a>
+    </div>
+
+    <div id="home-recent-tracks" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <% if (typeof recentTracks !== 'undefined' && Array.isArray(recentTracks) && recentTracks.length > 0) { %>
+        <% recentTracks.slice(0, 4).forEach((track, idx) => { %>
+          <div class="kwizz-card p-4 flex items-center gap-3.5 transition-all hover:scale-[1.01]" style="background-color: var(--bg-card); border-color: var(--border-color);">
+            <div class="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 border shadow-sm" style="background-color: var(--button-secondary-bg); border-color: var(--border-color);">
+              <img src="<%= track.artwork || '/images/fallback-album.svg' %>" alt="<%= track.title %>" class="w-full h-full object-cover" onerror="this.src='/images/fallback-album.svg'">
+            </div>
+            <div class="min-w-0 flex-1">
+              <span class="text-[9px] uppercase tracking-wider font-extrabold text-amber-500 block mb-0.5">
+                <%= idx === 0 ? 'Just Played' : 'Earlier' %>
+              </span>
+              <h3 class="text-xs font-black truncate" style="color: var(--text-primary);" title="<%= track.title %>"><%= track.title %></h3>
+              <p class="text-[11px] truncate font-medium" style="color: var(--text-secondary);" title="<%= track.artist %>"><%= track.artist %></p>
+              <% if (track.appleMusicUrl) { %>
+                <a href="<%= track.appleMusicUrl %>" target="_blank" rel="noopener noreferrer" class="inline-block mt-1 text-[9px] text-amber-500 hover:underline font-bold">
+                  Apple Music &nearr;
+                </a>
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="col-span-full p-6 text-center text-xs rounded-2xl border" style="background-color: var(--bg-card); border-color: var(--border-color); color: var(--text-muted);">
+          Connecting to Live365 station stream...
+        </div>
+      <% } %>
     </div>
   </section>
 

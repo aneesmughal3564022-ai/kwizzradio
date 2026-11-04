@@ -63,12 +63,17 @@ const getHomePage = async (req, res, next) => {
     const { onNow, upNext } = findOnNowAndUpNext(slots);
     const liveTrack = await live365Service.getNowPlaying();
 
+    const recentTracks = await live365Service.getRecentTracks();
+    const stationMetadata = live365Service.getStationMetadata();
+
     renderPage(req, res, 'home', 'pages/home', {
       title: 'KWIZZ Radio | Ottawa Reggae & Dancehall 24/7',
       description: 'Stream Ottawa premier Caribbean radio station live. Reggae, dancehall, rocksteady, and live DJ sets streaming 24/7 worldwide.',
       onNow,
       upNext,
       liveTrack,
+      recentTracks,
+      stationMetadata,
       upcomingEvents: events.slice(0, 3)
     });
   } catch (err) {
@@ -80,12 +85,16 @@ const getHomePage = async (req, res, next) => {
 const getListenPage = async (req, res, next) => {
   try {
     const liveTrack = await live365Service.getNowPlaying();
+
     const recentTracks = await live365Service.getRecentTracks();
+    const stationMetadata = live365Service.getStationMetadata();
+
     renderPage(req, res, 'listen', 'pages/listen', {
       title: 'Listen Live | KWIZZ Radio Ottawa',
       description: 'Tune in to the high quality 128kbps live reggae and dancehall stream from KWIZZ Radio Ottawa.',
       liveTrack,
-      recentTracks
+      recentTracks,
+      stationMetadata
     });
   } catch (err) {
     next(err);

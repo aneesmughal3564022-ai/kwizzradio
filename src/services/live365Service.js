@@ -97,7 +97,7 @@ class Live365Service {
 
     // If polling was paused, resume it immediately
     if (!this.pollTimer) {
-      this.startPolling();
+      this.pollLive365();
     }
 
     // Send immediate Now Playing payload to the newly connected client
