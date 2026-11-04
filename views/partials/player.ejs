@@ -2,11 +2,16 @@
 <div id="global-player" class="fixed bottom-0 left-0 right-0 z-50 transition-all duration-300 border-t backdrop-blur-2xl shadow-2xl" style="background-color: var(--player-bg); border-color: var(--border-color);">
   <div class="reggae-stripe"></div>
   
-  <div class="max-w-7xl mx-auto px-4 py-2.5 sm:py-3 flex items-center justify-between gap-3 sm:gap-6">
+  <!-- Top Micro Progress Line for Continuous Visual Feedback -->
+  <div class="w-full h-[3px] overflow-hidden relative" style="background-color: var(--border-color);">
+    <div id="player-top-progress-bar" class="h-full bg-gradient-to-r from-emerald-500 via-amber-400 to-amber-500 transition-all duration-300" style="width: 0%;"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-6">
     
-    <!-- Track Metadata & Artwork -->
-    <div class="flex items-center gap-3 sm:gap-3.5 min-w-0 max-w-[48%] sm:max-w-xs md:max-w-sm">
-      <div class="relative w-12 h-12 sm:w-13 sm:h-13 shrink-0 rounded-xl overflow-hidden border shadow-md" style="background-color: var(--bg-card); border-color: var(--border-color);">
+    <!-- Track Metadata & Artwork (Left) -->
+    <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0 w-auto sm:w-72 lg:w-80 shrink-0">
+      <div class="relative w-11 h-11 sm:w-13 sm:h-13 shrink-0 rounded-xl overflow-hidden border shadow-md" style="background-color: var(--bg-card); border-color: var(--border-color);">
         <img id="player-artwork" src="/images/fallback-album.svg" alt="Now Playing Artwork" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='/images/fallback-album.svg';" referrerpolicy="no-referrer">
         <div id="player-equalizer" class="absolute inset-0 bg-black/60 hidden items-center justify-center gap-0.5">
           <span class="equalizer-bar" style="height: 12px;"></span>
@@ -29,8 +34,9 @@
       </div>
     </div>
 
-    <!-- Center Playback Controls -->
-    <div class="flex flex-col items-center justify-center shrink-0">
+    <!-- Center Playback Controls & Live Song Progress -->
+    <div class="flex-1 max-w-lg flex flex-col items-center justify-center min-w-0 px-1 sm:px-4">
+      <!-- Main Play Button Row -->
       <div class="flex items-center gap-2 sm:gap-3">
         <!-- Reconnect Button -->
         <button id="player-reconnect-btn" class="hidden px-3 py-1 text-xs font-bold rounded-full bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/30 transition-all animate-pulse">
@@ -38,7 +44,7 @@
         </button>
 
         <!-- Main Play / Pause Button -->
-        <button id="player-play-btn" type="button" aria-label="Play Live Stream" class="btn-primary-gold w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center cursor-pointer focus:outline-none">
+        <button id="player-play-btn" type="button" aria-label="Play Live Stream" class="btn-primary-gold w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center cursor-pointer focus:outline-none shadow-md">
           <span id="player-play-icon">
             <svg class="w-5 h-5 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           </span>
@@ -50,11 +56,25 @@
           </span>
         </button>
       </div>
-      <div id="player-status-detail" class="text-[10px] mt-1 hidden text-center" style="color: var(--text-muted);"></div>
+
+      <!-- Live Track Progress Bar (Elapsed / Remaining) -->
+      <div id="player-progress-container" class="w-full flex items-center gap-2 sm:gap-3 mt-1 sm:mt-1.5">
+        <span id="player-time-elapsed" class="text-[10px] sm:text-[11px] font-mono font-bold shrink-0 tabular-nums" style="color: var(--text-muted);" title="Time played">0:00</span>
+        
+        <div id="player-progress-track" class="relative flex-1 h-1.5 sm:h-2 rounded-full overflow-hidden transition-all" style="background-color: var(--button-secondary-bg); border: 1px solid var(--border-color);" title="Song Progress">
+          <div id="player-progress-fill" class="h-full bg-gradient-to-r from-emerald-500 via-amber-400 to-amber-500 rounded-full transition-all duration-300 relative" style="width: 0%;">
+            <span class="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-amber-300 shadow-sm"></span>
+          </div>
+        </div>
+
+        <span id="player-time-remaining" class="text-[10px] sm:text-[11px] font-mono font-bold shrink-0 tabular-nums" style="color: var(--text-muted);" title="Time remaining">-0:00</span>
+      </div>
+
+      <div id="player-status-detail" class="text-[9px] mt-0.5 hidden text-center" style="color: var(--text-muted);"></div>
     </div>
 
     <!-- Right Controls: Volume, Share, Expand -->
-    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+    <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
       <!-- Volume Slider (Desktop) -->
       <div class="hidden md:flex items-center gap-2">
         <button id="player-mute-btn" type="button" aria-label="Mute or Unmute Audio" class="p-1.5 transition-colors" style="color: var(--text-muted);" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">
@@ -92,12 +112,25 @@
     </button>
   </div>
 
-  <div class="my-auto flex flex-col items-center text-center">
-    <div class="w-64 h-64 rounded-3xl overflow-hidden shadow-2xl border mb-6" style="background-color: var(--bg-card); border-color: var(--border-color);">
+  <div class="my-auto flex flex-col items-center text-center w-full max-w-sm mx-auto">
+    <div class="w-60 h-60 sm:w-64 sm:h-64 rounded-3xl overflow-hidden shadow-2xl border mb-6" style="background-color: var(--bg-card); border-color: var(--border-color);">
       <img id="mobile-modal-artwork" src="/images/fallback-album.svg" alt="Now Playing Track" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='/images/fallback-album.svg';" referrerpolicy="no-referrer">
     </div>
-    <h2 id="mobile-modal-title" class="text-2xl font-black mb-1" style="color: var(--text-primary);">KWIZZ Radio Live</h2>
-    <p id="mobile-modal-artist" class="text-base text-amber-500 font-semibold mb-4">Ottawa Reggae &amp; Dancehall</p>
+    <h2 id="mobile-modal-title" class="text-xl sm:text-2xl font-black mb-1 px-4 truncate max-w-full" style="color: var(--text-primary);">KWIZZ Radio Live</h2>
+    <p id="mobile-modal-artist" class="text-sm sm:text-base text-amber-500 font-semibold mb-4 px-4 truncate max-w-full">Ottawa Reggae &amp; Dancehall</p>
+    
+    <!-- Mobile Track Progress Bar -->
+    <div class="w-full px-2 space-y-1.5 mb-5">
+      <div class="w-full h-2 rounded-full overflow-hidden border" style="background-color: var(--button-secondary-bg); border-color: var(--border-color);">
+        <div id="mobile-progress-fill" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-amber-500 transition-all duration-300" style="width: 0%;"></div>
+      </div>
+      <div class="flex items-center justify-between text-xs font-mono font-bold tabular-nums" style="color: var(--text-muted);">
+        <span id="mobile-time-elapsed">0:00</span>
+        <span class="text-[10px] text-emerald-500 uppercase font-black">24/7 Live</span>
+        <span id="mobile-time-remaining">-0:00</span>
+      </div>
+    </div>
+
     <div id="mobile-modal-status" class="px-3 py-1 rounded-full text-xs font-semibold badge-gold">
       Internet Radio Stream Ready
     </div>
@@ -105,7 +138,7 @@
 
   <div class="space-y-6">
     <div class="flex items-center justify-center">
-      <button id="mobile-modal-play-btn" class="btn-primary-gold w-18 h-18 rounded-full flex items-center justify-center cursor-pointer">
+      <button id="mobile-modal-play-btn" class="btn-primary-gold w-16 h-16 sm:w-18 sm:h-18 rounded-full flex items-center justify-center cursor-pointer shadow-xl">
         <svg class="w-8 h-8 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       </button>
     </div>

@@ -99,6 +99,18 @@
             </div>
           </div>
 
+          <!-- Live Song Progress Bar -->
+          <div class="space-y-1.5 pt-2 border-t" style="border-color: var(--border-color);">
+            <div class="flex items-center justify-between text-[11px] font-mono font-bold tabular-nums" style="color: var(--text-muted);">
+              <span id="hero-time-elapsed">0:00</span>
+              <span class="text-[9px] uppercase tracking-wider font-extrabold text-amber-500">Live Track Progress</span>
+              <span id="hero-time-remaining">-0:00</span>
+            </div>
+            <div class="w-full h-1.5 rounded-full overflow-hidden border" style="background-color: var(--button-secondary-bg); border-color: var(--border-color);">
+              <div id="hero-progress-bar" class="h-full bg-gradient-to-r from-emerald-500 via-amber-400 to-amber-500 rounded-full transition-all duration-300" style="width: 0%;"></div>
+            </div>
+          </div>
+
           <!-- On Now & Up Next Badges -->
           <div class="grid grid-cols-2 gap-3 pt-3 border-t text-xs" style="border-color: var(--border-color);">
             <div class="p-3 rounded-xl border" style="background-color: var(--bg-card); border-color: var(--border-color);">

@@ -56,7 +56,7 @@
   function pollNowPlaying() {
     if (document.hidden && (!window.player || window.player.state !== 'LIVE')) return;
 
-    fetch('/api/now-playing')
+    fetch('/api/now-playing?_cb=' + Date.now())
       .then(r => r.json())
       .then(res => {
         if (res.success && res.data && window.player) {

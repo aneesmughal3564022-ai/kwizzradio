@@ -1,5 +1,5 @@
 // KWIZZ Radio Persistent Player Engine
-// Features: Exponential backoff reconnect, MediaSession API, Status UI, Volume memory, Live365 Metadata Sync
+// Features: Exponential backoff reconnect, MediaSession API, Status UI, Volume memory, Live365 Metadata Sync, Live Song Progress & Auto-Transition
 (function () {
   const BACKOFF_DELAYS = [1000, 2000, 5000, 10000]; // 1s, 2s, 5s, 10s
   const VOLUME_KEY = 'kwizz_player_volume';
@@ -15,17 +15,40 @@
       this.retryCount = 0;
       this.retryTimer = null;
       this.isManualPause = false;
+
+      // Track metadata & progress state
+      this.serverClockOffset = 0; // Difference between server time and client time
+      this.isFetchingNextTrack = false;
+      this.nextTrackPollCount = 0;
+      this.progressTimer = null;
+
       this.currentTrack = {
         title: 'KWIZZ Radio Live',
         artist: 'Ottawa Reggae & Dancehall',
-        artwork: '/images/fallback-album.svg'
+        artwork: '/images/fallback-album.svg',
+        duration: 180,
+        startTime: Date.now()
       };
+
+      // Check if server injected initial track into audio element
+      const initialTrackAttr = this.audio.getAttribute('data-initial-track');
+      if (initialTrackAttr) {
+        try {
+          const parsed = JSON.parse(decodeURIComponent(initialTrackAttr));
+          if (parsed && (parsed.title || parsed.artist)) {
+            this.currentTrack = Object.assign(this.currentTrack, parsed);
+          }
+        } catch (e) {}
+      }
 
       this.initDomElements();
       this.initAudioEvents();
       this.initMediaSession();
       this.restoreVolume();
       this.bindUserControls();
+
+      // Start live song elapsed / remaining timer loop
+      this.startProgressLoop();
 
       // Expose globally for page scripts
       window.player = this;
@@ -46,6 +69,12 @@
       this.trackArtist = document.getElementById('player-artist');
       this.trackArtwork = document.getElementById('player-artwork');
 
+      // Live Song Progress Elements (Bottom Player Bar)
+      this.timeElapsedEl = document.getElementById('player-time-elapsed');
+      this.timeRemainingEl = document.getElementById('player-time-remaining');
+      this.progressFillEl = document.getElementById('player-progress-fill');
+      this.topProgressBarEl = document.getElementById('player-top-progress-bar');
+
       this.volumeSlider = document.getElementById('player-volume-slider');
       this.muteBtn = document.getElementById('player-mute-btn');
       this.volumeIconHigh = document.getElementById('volume-icon-high');
@@ -60,6 +89,9 @@
       this.modalArtist = document.getElementById('mobile-modal-artist');
       this.modalArtwork = document.getElementById('mobile-modal-artwork');
       this.modalStatus = document.getElementById('mobile-modal-status');
+      this.mobileTimeElapsedEl = document.getElementById('mobile-time-elapsed');
+      this.mobileTimeRemainingEl = document.getElementById('mobile-time-remaining');
+      this.mobileProgressFillEl = document.getElementById('mobile-progress-fill');
     }
 
     initAudioEvents() {
@@ -117,7 +149,7 @@
 
       // Update Status Badge UI
       if (this.statusBadge && this.statusText) {
-        this.statusBadge.className = 'inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ';
+        this.statusBadge.className = 'inline-flex items-center gap-1 px-1.5 py-0.2 rounded-md text-[9px] font-bold uppercase tracking-wider ';
         const dot = this.statusBadge.querySelector('span:first-child');
 
         switch (newState) {
@@ -159,7 +191,7 @@
 
       // Sync Mobile Modal Status
       if (this.modalStatus) {
-        this.modalStatus.textContent = newState === 'LIVE' ? 'Now Broadcasting' : (newState === 'CONNECTING' ? 'Connecting to Stream...' : 'Stream Ready');
+        this.modalStatus.textContent = newState === 'LIVE' ? 'Now Broadcasting Live' : (newState === 'CONNECTING' ? 'Connecting to Stream...' : 'Stream Ready');
       }
 
       // Dispatch analytics event
@@ -243,9 +275,156 @@
       }
     }
 
+    /**
+     * Starts continuous progress timer (1 second interval)
+     */
+    startProgressLoop() {
+      if (this.progressTimer) clearInterval(this.progressTimer);
+      this.progressTimer = setInterval(() => {
+        this.tickProgress();
+      }, 1000);
+      this.tickProgress();
+    }
+
+    /**
+     * Ticks song progress: computes elapsed seconds, remaining seconds, and progress percentage
+     */
+    tickProgress() {
+      if (!this.currentTrack) return;
+
+      const duration = Math.max(1, Math.round(Number(this.currentTrack.duration) || 180));
+      
+      let startTime = this.currentTrack.startTime;
+      if (!startTime && this.currentTrack.start) {
+        startTime = new Date(this.currentTrack.start).getTime();
+      }
+      if (!startTime || isNaN(startTime)) {
+        startTime = Date.now();
+        this.currentTrack.startTime = startTime;
+      }
+
+      // Compute elapsed using clock-offset corrected time
+      const correctedNow = Date.now() + (this.serverClockOffset || 0);
+      let elapsed = Math.max(0, Math.floor((correctedNow - startTime) / 1000));
+
+      // Cap elapsed at duration
+      if (elapsed > duration) {
+        elapsed = duration;
+      }
+
+      const remaining = Math.max(0, duration - elapsed);
+      const percent = Math.min(100, Math.max(0, (elapsed / duration) * 100));
+
+      const formatTime = (secs) => {
+        const m = Math.floor(secs / 60);
+        const s = Math.floor(secs % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
+      };
+
+      const elapsedStr = formatTime(elapsed);
+      const remainingStr = `-${formatTime(remaining)}`;
+
+      // Update Bottom Sticky Player Bar
+      if (this.timeElapsedEl) this.timeElapsedEl.textContent = elapsedStr;
+      if (this.timeRemainingEl) this.timeRemainingEl.textContent = remainingStr;
+      if (this.progressFillEl) this.progressFillEl.style.width = `${percent}%`;
+      if (this.topProgressBarEl) this.topProgressBarEl.style.width = `${percent}%`;
+
+      // Update Mobile Modal
+      if (this.mobileTimeElapsedEl) this.mobileTimeElapsedEl.textContent = elapsedStr;
+      if (this.mobileTimeRemainingEl) this.mobileTimeRemainingEl.textContent = remainingStr;
+      if (this.mobileProgressFillEl) this.mobileProgressFillEl.style.width = `${percent}%`;
+
+      // Update Hero Card (Home Page)
+      const heroElapsed = document.getElementById('hero-time-elapsed');
+      const heroRemaining = document.getElementById('hero-time-remaining');
+      const heroBar = document.getElementById('hero-progress-bar');
+      if (heroElapsed) heroElapsed.textContent = elapsedStr;
+      if (heroRemaining) heroRemaining.textContent = remainingStr;
+      if (heroBar) heroBar.style.width = `${percent}%`;
+
+      // Update Listen Lounge
+      const listenElapsed = document.getElementById('listen-time-elapsed');
+      const listenRemaining = document.getElementById('listen-time-remaining');
+      const listenBar = document.getElementById('listen-progress-bar');
+      if (listenElapsed) listenElapsed.textContent = elapsedStr;
+      if (listenRemaining) listenRemaining.textContent = remainingStr;
+      if (listenBar) listenBar.style.width = `${percent}%`;
+
+      // Check if song has completed: automatically fetch and transition to new song
+      if (elapsed >= duration && !this.isFetchingNextTrack) {
+        this.handleTrackEnded();
+      }
+    }
+
+    /**
+     * Triggered when song ends: polls for the new song and transitions metadata
+     */
+    handleTrackEnded() {
+      this.isFetchingNextTrack = true;
+      this.nextTrackPollCount = 0;
+      this.pollForNextTrack();
+    }
+
+    pollForNextTrack() {
+      fetch(`/api/now-playing?_cb=${Date.now()}`)
+        .then((r) => r.json())
+        .then((res) => {
+          if (res.success && res.data) {
+            const nextTrack = res.data;
+            const currentTitle = (this.currentTrack.title || '').trim().toLowerCase();
+            const nextTitle = (nextTrack.title || '').trim().toLowerCase();
+            const isDifferentTrack = nextTitle !== currentTitle || (nextTrack.start && nextTrack.start !== this.currentTrack.start);
+
+            if (isDifferentTrack) {
+              // New track has begun on air!
+              this.isFetchingNextTrack = false;
+              this.updateMetadata(nextTrack);
+              return;
+            }
+          }
+
+          // In case Live365 has a 1-3 second delay between audio track finish and API update
+          this.nextTrackPollCount++;
+          if (this.nextTrackPollCount < 7) {
+            setTimeout(() => this.pollForNextTrack(), 2000);
+          } else {
+            // Reset lock after max retries so future ticks can poll
+            setTimeout(() => {
+              this.isFetchingNextTrack = false;
+            }, 4000);
+          }
+        })
+        .catch(() => {
+          this.isFetchingNextTrack = false;
+        });
+    }
+
     updateMetadata(track) {
       if (!track) return;
-      this.currentTrack = track;
+      this.currentTrack = Object.assign(this.currentTrack || {}, track);
+
+      // Synchronize server clock offset
+      if (track.serverTime) {
+        this.serverClockOffset = track.serverTime - Date.now();
+      }
+
+      // Parse start and duration
+      const durationSec = Math.max(1, Math.round(Number(track.duration) || 180));
+      let startTimeMs = track.startTime;
+      if (!startTimeMs && track.start) {
+        startTimeMs = new Date(track.start).getTime();
+      }
+      if (!startTimeMs || isNaN(startTimeMs)) {
+        startTimeMs = Date.now();
+      }
+
+      this.currentTrack.duration = durationSec;
+      this.currentTrack.startTime = startTimeMs;
+      this.currentTrack.start = track.start || new Date(startTimeMs).toISOString();
+      this.currentTrack.end = track.end || new Date(startTimeMs + durationSec * 1000).toISOString();
+      this.isFetchingNextTrack = false;
+      this.nextTrackPollCount = 0;
 
       const title = track.title || 'KWIZZ Radio Live';
       const artist = track.artist || 'Ottawa Reggae & Dancehall';
@@ -337,6 +516,9 @@
           ]
         });
       }
+
+      // Immediately tick progress to update the progress bar without waiting 1s
+      this.tickProgress();
     }
 
     restoreVolume() {

@@ -235,14 +235,23 @@ class Live365Service {
               listeners: json.listeners || 0
             };
             if (current && (current.title || current.artist)) {
+              const durationSec = Math.max(1, Math.round(Number(current.duration) || 180));
+              let startTimeMs = current.start ? new Date(current.start).getTime() : Date.now();
+              if (isNaN(startTimeMs)) startTimeMs = Date.now();
+              let endTimeMs = current.end ? new Date(current.end).getTime() : (startTimeMs + durationSec * 1000);
+              if (isNaN(endTimeMs)) endTimeMs = startTimeMs + durationSec * 1000;
+
               return resolve({
-                title: current.title || 'KWIZZ Reggae Selection',
-                artist: current.artist || 'KWIZZ Radio DJ',
+                title: (current.title || 'KWIZZ Reggae Selection').trim(),
+                artist: (current.artist || 'KWIZZ Radio DJ').trim(),
                 album: current.album || 'Ottawa Waves',
                 artwork: current.art || '/images/fallback-album.svg',
-                duration: current.duration || 180,
-                start: current.start || null,
-                end: current.end || null,
+                duration: durationSec,
+                start: current.start || new Date(startTimeMs).toISOString(),
+                end: current.end || new Date(endTimeMs).toISOString(),
+                startTime: startTimeMs,
+                endTime: endTimeMs,
+                serverTime: Date.now(),
                 appleMusicUrl: current.apple_music_url || null,
                 amazonStoreUrl: current.amazon_store_url || null,
                 status: current.status || 'playing'
@@ -265,9 +274,18 @@ class Live365Service {
 
   getNextMockTrack() {
     const track = MOCK_REGGAE_TRACKS[this.currentTrackIndex % MOCK_REGGAE_TRACKS.length];
-    // Rotate to next track after some cycles or when queried
     this.currentTrackIndex++;
-    return { ...track };
+    const duration = track.duration || 180;
+    const now = Date.now();
+    return {
+      ...track,
+      duration,
+      startTime: now,
+      endTime: now + duration * 1000,
+      start: new Date(now).toISOString(),
+      end: new Date(now + duration * 1000).toISOString(),
+      serverTime: now
+    };
   }
 
   /**
@@ -277,11 +295,22 @@ class Live365Service {
     try {
       const cached = await cache.get(CACHE_KEY_NOW_PLAYING);
       if (cached) {
-        return typeof cached === 'string' ? JSON.parse(cached) : cached;
+        const track = typeof cached === 'string' ? JSON.parse(cached) : cached;
+        if (track && track.endTime && Date.now() > track.endTime) {
+          return await this.pollLive365();
+        }
+        track.serverTime = Date.now();
+        return track;
       }
     } catch (e) {}
 
-    if (this.lastTrack) return this.lastTrack;
+    if (this.lastTrack) {
+      if (this.lastTrack.endTime && Date.now() > this.lastTrack.endTime) {
+        return this.pollLive365();
+      }
+      this.lastTrack.serverTime = Date.now();
+      return this.lastTrack;
+    }
     return this.pollLive365();
   }
 

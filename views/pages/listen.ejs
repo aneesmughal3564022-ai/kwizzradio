@@ -38,9 +38,21 @@
       <h2 id="listen-page-title" class="text-2xl sm:text-3xl font-black truncate max-w-lg mb-1" style="color: var(--text-primary);">
         <%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.title ? liveTrack.title : 'KWIZZ Radio Live' %>
       </h2>
-      <p id="listen-page-artist" class="text-base sm:text-lg font-bold text-amber-500 truncate max-w-lg mb-4">
+      <p id="listen-page-artist" class="text-base sm:text-lg font-bold text-amber-500 truncate max-w-lg mb-3">
         <%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.artist ? liveTrack.artist : "Ottawa's Reggae & Dancehall • Worldwide Stream" %>
       </p>
+
+      <!-- Live Track Progress Display -->
+      <div class="w-full max-w-sm mx-auto space-y-1.5 mb-5 px-4">
+        <div class="flex items-center justify-between text-xs font-mono font-bold tabular-nums" style="color: var(--text-muted);">
+          <span id="listen-time-elapsed">0:00</span>
+          <span class="text-[10px] uppercase tracking-wider text-amber-500 font-extrabold">24/7 Digital Radio</span>
+          <span id="listen-time-remaining">-0:00</span>
+        </div>
+        <div class="w-full h-2 rounded-full overflow-hidden border" style="background-color: var(--button-secondary-bg); border-color: var(--border-color);">
+          <div id="listen-progress-bar" class="h-full bg-gradient-to-r from-emerald-500 via-amber-400 to-amber-500 rounded-full transition-all duration-300" style="width: 0%;"></div>
+        </div>
+      </div>
 
       <!-- Music Purchase / Streaming Links -->
       <div id="listen-track-links" class="flex flex-wrap items-center justify-center gap-2 mb-6">
@@ -193,7 +205,7 @@
     sync();
 
     // Fetch live now playing data from Live365 API
-    fetch('/api/now-playing')
+    fetch('/api/now-playing?_cb=' + Date.now())
       .then(r => r.json())
       .then(res => {
         if (res.success && res.data) {
