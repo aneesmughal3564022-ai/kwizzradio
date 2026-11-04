@@ -2,6 +2,7 @@
 // Supports Light & Dark Themes with instant switching and persistence
 (function () {
   const THEME_KEY = 'kwizz_radio_theme';
+  let isToggling = false;
 
   function getSavedTheme() {
     try {
@@ -22,11 +23,8 @@
     if (saved === 'light' || saved === 'dark') {
       return saved;
     }
-    // Respect user's OS / browser color scheme
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      return 'light';
-    }
-    return 'dark'; // KWIZZ Radio signature aesthetic
+    // Default to dark theme for KWIZZ Radio signature aesthetic
+    return 'dark';
   }
 
   function applyTheme(theme) {
@@ -59,6 +57,8 @@
       btn.setAttribute('title', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
       const icon = btn.querySelector('.theme-icon');
       if (icon) {
+        // In dark mode: show Sun icon (to switch to light)
+        // In light mode: show Moon icon (to switch to dark)
         icon.innerHTML = theme === 'dark'
           ? '<svg class="w-4 h-4 text-amber-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>'
           : '<svg class="w-4 h-4 text-amber-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>';
@@ -71,28 +71,47 @@
   }
 
   window.toggleTheme = function () {
+    if (isToggling) return;
+    isToggling = true;
+    setTimeout(() => { isToggling = false; }, 200);
+
     const current = document.documentElement.getAttribute('data-theme') || (document.documentElement.classList.contains('light') ? 'light' : 'dark');
     const next = current === 'dark' ? 'light' : 'dark';
     setSavedTheme(next);
     applyTheme(next);
+    return next;
   };
 
   window.applyTheme = applyTheme;
 
-  // Immediately apply preferred theme
+  // Immediately apply preferred theme synchronously to prevent flash of wrong theme
   const initialTheme = getPreferredTheme();
   applyTheme(initialTheme);
 
   // Re-apply when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      applyTheme(getPreferredTheme());
-    });
-  } else {
+  function initThemeControls() {
     applyTheme(getPreferredTheme());
+
+    // Attach direct listeners to buttons for guaranteed reactivity
+    const toggleBtns = document.querySelectorAll('#theme-toggle-btn, .theme-toggle-btn');
+    toggleBtns.forEach((btn) => {
+      btn.onclick = function (e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        window.toggleTheme();
+      };
+    });
   }
 
-  // Delegated click listener on document for high reliability
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initThemeControls);
+  } else {
+    initThemeControls();
+  }
+
+  // Delegated click listener on document as a safety fallback
   document.addEventListener('click', (event) => {
     const btn = event.target.closest('#theme-toggle-btn, .theme-toggle-btn');
     if (btn) {
@@ -119,8 +138,8 @@
     } catch (e) {}
   }
 
-  // Re-apply when PJAX page navigation occurs
+  // Re-apply and re-bind when PJAX page navigation occurs
   document.addEventListener('kwizz:navigated', () => {
-    applyTheme(getPreferredTheme());
+    initThemeControls();
   });
 })();

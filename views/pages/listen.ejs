@@ -27,7 +27,7 @@
 
       <!-- Vinyl / Artwork Showcase -->
       <div class="relative w-48 h-48 sm:w-64 sm:h-64 rounded-2xl overflow-hidden shadow-2xl border-2 mb-6 group" style="background-color: var(--bg-card); border-color: var(--border-color);">
-        <img id="listen-page-art" src="<%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.artwork ? liveTrack.artwork : '/images/fallback-album.svg' %>" alt="Now Playing Track Artwork" class="w-full h-full object-cover" onerror="this.src='/images/fallback-album.svg'">
+        <img id="listen-page-art" src="<%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.artwork ? liveTrack.artwork : '/images/fallback-album.svg' %>" alt="Now Playing Track Artwork" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='/images/fallback-album.svg';" referrerpolicy="no-referrer">
         <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-xs">
           <button onclick="if(window.player) window.player.toggle()" class="w-16 h-16 rounded-full btn-primary-gold flex items-center justify-center shadow-xl transform hover:scale-110 active:scale-95 transition-transform cursor-pointer" aria-label="Toggle Playback">
             <svg class="w-8 h-8 fill-current translate-x-0.5 text-zinc-950" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -124,7 +124,7 @@
           <li class="flex items-center justify-between gap-3 p-3.5 rounded-2xl border transition-all hover:scale-[1.005]" style="background-color: var(--bg-card); border-color: var(--border-color);">
             <div class="flex items-center gap-3.5 min-w-0 flex-1">
               <div class="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border shadow-sm" style="background-color: var(--button-secondary-bg); border-color: var(--border-color);">
-                <img src="<%= track.artwork || '/images/fallback-album.svg' %>" alt="<%= track.title %>" class="w-full h-full object-cover" onerror="this.src='/images/fallback-album.svg'">
+                <img src="<%= track.artwork || '/images/fallback-album.svg' %>" alt="<%= track.title %>" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='/images/fallback-album.svg';" referrerpolicy="no-referrer">
               </div>
               <div class="min-w-0 flex-1">
                 <h4 class="text-xs sm:text-sm font-black truncate" style="color: var(--text-primary);"><%= track.title %></h4>

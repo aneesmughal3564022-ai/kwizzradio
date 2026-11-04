@@ -7,7 +7,7 @@
     <!-- Track Metadata & Artwork -->
     <div class="flex items-center gap-3 sm:gap-3.5 min-w-0 max-w-[48%] sm:max-w-xs md:max-w-sm">
       <div class="relative w-12 h-12 sm:w-13 sm:h-13 shrink-0 rounded-xl overflow-hidden border shadow-md" style="background-color: var(--bg-card); border-color: var(--border-color);">
-        <img id="player-artwork" src="/images/fallback-album.svg" alt="Now Playing Artwork" class="w-full h-full object-cover" onerror="this.src='/images/fallback-album.svg'">
+        <img id="player-artwork" src="/images/fallback-album.svg" alt="Now Playing Artwork" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='/images/fallback-album.svg';" referrerpolicy="no-referrer">
         <div id="player-equalizer" class="absolute inset-0 bg-black/60 hidden items-center justify-center gap-0.5">
           <span class="equalizer-bar" style="height: 12px;"></span>
           <span class="equalizer-bar" style="height: 18px;"></span>
@@ -94,7 +94,7 @@
 
   <div class="my-auto flex flex-col items-center text-center">
     <div class="w-64 h-64 rounded-3xl overflow-hidden shadow-2xl border mb-6" style="background-color: var(--bg-card); border-color: var(--border-color);">
-      <img id="mobile-modal-artwork" src="/images/fallback-album.svg" alt="Now Playing Track" class="w-full h-full object-cover" onerror="this.src='/images/fallback-album.svg'">
+      <img id="mobile-modal-artwork" src="/images/fallback-album.svg" alt="Now Playing Track" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='/images/fallback-album.svg';" referrerpolicy="no-referrer">
     </div>
     <h2 id="mobile-modal-title" class="text-2xl font-black mb-1" style="color: var(--text-primary);">KWIZZ Radio Live</h2>
     <p id="mobile-modal-artist" class="text-base text-amber-500 font-semibold mb-4">Ottawa Reggae &amp; Dancehall</p>

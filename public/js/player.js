@@ -1,6 +1,5 @@
 // KWIZZ Radio Persistent Player Engine
-// Features: Exponential backoff reconnect, MediaSession API, Status UI, Volume memory
-
+// Features: Exponential backoff reconnect, MediaSession API, Status UI, Volume memory, Live365 Metadata Sync
 (function () {
   const BACKOFF_DELAYS = [1000, 2000, 5000, 10000]; // 1s, 2s, 5s, 10s
   const VOLUME_KEY = 'kwizz_player_volume';
@@ -87,7 +86,7 @@
       });
 
       // Stream error encountered
-      this.audio.addEventListener('error', (e) => {
+      this.audio.addEventListener('error', () => {
         if (!this.isManualPause) {
           this.handleConnectionDrop();
         }
@@ -187,7 +186,11 @@
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
           console.warn('Playback initiation blocked or failed:', err);
-          this.handleConnectionDrop();
+          if (err && err.name === 'NotAllowedError') {
+            this.setStatus('IDLE', 'Click play to start');
+          } else {
+            this.handleConnectionDrop();
+          }
         });
       }
     }
@@ -224,8 +227,7 @@
           this.play();
         }, delay);
       } else {
-        // Max retries reached: show offline message and Reconnect button
-        this.setStatus('OFFLINE', 'Connection lost. Tap Reconnect to try again.');
+        this.setStatus('OFFLINE', 'Stream unavailable. Tap to reconnect.');
         if (this.reconnectBtn) this.reconnectBtn.classList.remove('hidden');
       }
     }
@@ -247,17 +249,31 @@
 
       const title = track.title || 'KWIZZ Radio Live';
       const artist = track.artist || 'Ottawa Reggae & Dancehall';
-      const artwork = track.artwork || '/images/fallback-album.svg';
+      const artwork = (track.artwork && typeof track.artwork === 'string' && track.artwork.trim().length > 0)
+        ? track.artwork
+        : '/images/fallback-album.svg';
 
       // Update sticky player DOM
       if (this.trackTitle) this.trackTitle.textContent = title;
       if (this.trackArtist) this.trackArtist.textContent = artist;
-      if (this.trackArtwork) this.trackArtwork.src = artwork;
+      if (this.trackArtwork) {
+        this.trackArtwork.src = artwork;
+        this.trackArtwork.onerror = () => {
+          this.trackArtwork.onerror = null;
+          this.trackArtwork.src = '/images/fallback-album.svg';
+        };
+      }
 
       // Update mobile modal DOM
       if (this.modalTitle) this.modalTitle.textContent = title;
       if (this.modalArtist) this.modalArtist.textContent = artist;
-      if (this.modalArtwork) this.modalArtwork.src = artwork;
+      if (this.modalArtwork) {
+        this.modalArtwork.src = artwork;
+        this.modalArtwork.onerror = () => {
+          this.modalArtwork.onerror = null;
+          this.modalArtwork.src = '/images/fallback-album.svg';
+        };
+      }
 
       // Update Hero card if present on current page
       const heroTitle = document.getElementById('hero-track-title');
@@ -265,7 +281,13 @@
       const heroArt = document.getElementById('hero-track-art');
       if (heroTitle) heroTitle.textContent = title;
       if (heroArtist) heroArtist.textContent = artist;
-      if (heroArt) heroArt.src = artwork;
+      if (heroArt) {
+        heroArt.src = artwork;
+        heroArt.onerror = () => {
+          heroArt.onerror = null;
+          heroArt.src = '/images/fallback-album.svg';
+        };
+      }
 
       // Update Listen Lounge page elements if present
       const listenTitle = document.getElementById('listen-page-title');
@@ -273,11 +295,17 @@
       const listenArt = document.getElementById('listen-page-art');
       if (listenTitle) listenTitle.textContent = title;
       if (listenArtist) listenArtist.textContent = artist;
-      if (listenArt) listenArt.src = artwork;
+      if (listenArt) {
+        listenArt.src = artwork;
+        listenArt.onerror = () => {
+          listenArt.onerror = null;
+          listenArt.src = '/images/fallback-album.svg';
+        };
+      }
 
       // Update music purchase & stream links
       const appleLinks = document.querySelectorAll('#hero-apple-music, #listen-apple-music');
-      appleLinks.forEach(link => {
+      appleLinks.forEach((link) => {
         if (track.appleMusicUrl) {
           link.href = track.appleMusicUrl;
           link.classList.remove('hidden');
@@ -286,7 +314,7 @@
         }
       });
       const amazonLinks = document.querySelectorAll('#hero-amazon-music, #listen-amazon-music');
-      amazonLinks.forEach(link => {
+      amazonLinks.forEach((link) => {
         if (track.amazonStoreUrl) {
           link.href = track.amazonStoreUrl;
           link.classList.remove('hidden');
@@ -341,9 +369,10 @@
     }
 
     updateVolumeUI() {
-      const isMuted = this.audio.muted || this.audio.volume === 0;
+      const isMutedOrZero = this.audio.muted || this.audio.volume === 0;
+
       if (this.volumeIconHigh && this.volumeIconMuted) {
-        if (isMuted) {
+        if (isMutedOrZero) {
           this.volumeIconHigh.classList.add('hidden');
           this.volumeIconMuted.classList.remove('hidden');
         } else {
@@ -351,34 +380,66 @@
           this.volumeIconMuted.classList.add('hidden');
         }
       }
+
+      if (this.volumeSlider && !this.audio.muted) {
+        this.volumeSlider.value = this.audio.volume;
+      }
+    }
+
+    showToast(message) {
+      let toast = document.getElementById('player-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'player-toast';
+        toast.className = 'fixed top-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-zinc-950/95 border border-amber-400 shadow-2xl transition-all duration-300 opacity-0 pointer-events-none';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 3000);
     }
 
     bindUserControls() {
+      // Bottom sticky play button
       if (this.playBtn) {
         this.playBtn.addEventListener('click', () => this.toggle());
       }
+
+      // Mobile modal play button
       if (this.modalPlayBtn) {
         this.modalPlayBtn.addEventListener('click', () => this.toggle());
       }
+
+      // Reconnect button
       if (this.reconnectBtn) {
         this.reconnectBtn.addEventListener('click', () => {
           this.retryCount = 0;
           this.play();
         });
       }
+
+      // Volume slider
       if (this.volumeSlider) {
         this.volumeSlider.addEventListener('input', (e) => {
           this.setVolume(parseFloat(e.target.value));
         });
       }
+
+      // Mute toggle button
       if (this.muteBtn) {
         this.muteBtn.addEventListener('click', () => this.toggleMute());
       }
+
+      // Expand mobile modal
       if (this.expandBtn && this.modal) {
         this.expandBtn.addEventListener('click', () => {
           this.modal.classList.remove('hidden');
         });
       }
+
+      // Close mobile modal
       if (this.closeModalBtn && this.modal) {
         this.closeModalBtn.addEventListener('click', () => {
           this.modal.classList.add('hidden');
@@ -411,21 +472,6 @@
         });
       }
     }
-
-    showToast(message) {
-      let toast = document.getElementById('player-toast');
-      if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'player-toast';
-        toast.className = 'fixed top-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-zinc-950/95 border border-amber-400 shadow-2xl transition-all duration-300 opacity-0 pointer-events-none';
-        document.body.appendChild(toast);
-      }
-      toast.textContent = message;
-      toast.classList.remove('opacity-0', 'pointer-events-none');
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'pointer-events-none');
-      }, 3000);
-    }
   }
 
   // Initialize on load
@@ -433,4 +479,3 @@
     new RadioPlayer();
   });
 })();
-

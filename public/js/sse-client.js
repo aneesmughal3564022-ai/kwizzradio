@@ -75,15 +75,30 @@
     if (topItem && topItem.getAttribute('data-title') === track.title) return;
 
     const item = document.createElement('li');
-    item.className = 'recent-track-item flex items-center gap-3 p-2.5 rounded-xl bg-zinc-900/60 border border-zinc-800 transition-all';
+    item.className = 'recent-track-item flex items-center justify-between gap-3 p-3.5 rounded-2xl border transition-all hover:scale-[1.005]';
+    item.style.backgroundColor = 'var(--bg-card)';
+    item.style.borderColor = 'var(--border-color)';
     item.setAttribute('data-title', track.title);
     item.innerHTML = `
-      <img src="${track.artwork || '/images/fallback-album.svg'}" alt="${track.title}" class="w-10 h-10 rounded-lg object-cover bg-zinc-800">
-      <div class="min-w-0 flex-1">
-        <h4 class="text-xs font-bold text-white truncate">${track.title}</h4>
-        <p class="text-[11px] text-zinc-400 truncate">${track.artist}</p>
+      <div class="flex items-center gap-3.5 min-w-0 flex-1">
+        <div class="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border shadow-sm" style="background-color: var(--button-secondary-bg); border-color: var(--border-color);">
+          <img src="${track.artwork || '/images/fallback-album.svg'}" alt="${track.title}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='/images/fallback-album.svg';" referrerpolicy="no-referrer">
+        </div>
+        <div class="min-w-0 flex-1">
+          <h4 class="text-xs sm:text-sm font-black truncate" style="color: var(--text-primary);">${track.title}</h4>
+          <p class="text-[11px] sm:text-xs truncate font-medium" style="color: var(--text-secondary);">${track.artist}</p>
+        </div>
       </div>
-      <span class="text-[10px] text-amber-400 font-semibold shrink-0">Just Now</span>
+      <div class="flex items-center gap-2 shrink-0">
+        ${track.appleMusicUrl ? `
+          <a href="${track.appleMusicUrl}" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold border transition-colors hover:border-amber-400" style="background-color: var(--button-secondary-bg); border-color: var(--border-color); color: var(--text-primary);">
+            <span>Apple Music</span>
+          </a>
+        ` : ''}
+        <span class="text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider text-amber-500" style="background-color: var(--button-secondary-bg);">
+          Just Now
+        </span>
+      </div>
     `;
 
     list.insertBefore(item, list.firstChild);
@@ -113,4 +128,3 @@
     pollNowPlaying();
   });
 })();
-
