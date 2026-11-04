@@ -1,5 +1,6 @@
 const prisma = require('../config/prisma');
 const env = require('../config/env');
+const live365Service = require('../services/live365Service');
 const { findOnNowAndUpNext } = require('../utils/time');
 
 /**
@@ -30,6 +31,8 @@ const renderPage = (req, res, pageName, viewPath, pageLocals = {}) => {
     stationName: env.STATION_NAME,
     stationTagline: env.STATION_TAGLINE,
     streamUrl: env.DEFAULT_STREAM_URL,
+    live365StationId: env.LIVE365_STATION_ID,
+    embedUrl: env.LIVE365_EMBED_URL,
     appBadgesEnabled: env.APP_BADGES_ENABLED,
     appStoreUrl: env.APP_STORE_URL,
     googlePlayUrl: env.GOOGLE_PLAY_URL,
@@ -58,12 +61,14 @@ const getHomePage = async (req, res, next) => {
     const slots = await getModelData('scheduleSlots');
     const events = await getModelData('events');
     const { onNow, upNext } = findOnNowAndUpNext(slots);
+    const liveTrack = await live365Service.getNowPlaying();
 
     renderPage(req, res, 'home', 'pages/home', {
       title: 'KWIZZ Radio | Ottawa Reggae & Dancehall 24/7',
       description: 'Stream Ottawa premier Caribbean radio station live. Reggae, dancehall, rocksteady, and live DJ sets streaming 24/7 worldwide.',
       onNow,
       upNext,
+      liveTrack,
       upcomingEvents: events.slice(0, 3)
     });
   } catch (err) {
@@ -74,9 +79,13 @@ const getHomePage = async (req, res, next) => {
 // 2. Listen Live Page
 const getListenPage = async (req, res, next) => {
   try {
+    const liveTrack = await live365Service.getNowPlaying();
+    const recentTracks = await live365Service.getRecentTracks();
     renderPage(req, res, 'listen', 'pages/listen', {
       title: 'Listen Live | KWIZZ Radio Ottawa',
-      description: 'Tune in to the high quality 128kbps live reggae and dancehall stream from KWIZZ Radio Ottawa.'
+      description: 'Tune in to the high quality 128kbps live reggae and dancehall stream from KWIZZ Radio Ottawa.',
+      liveTrack,
+      recentTracks
     });
   } catch (err) {
     next(err);

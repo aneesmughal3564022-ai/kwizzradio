@@ -12,6 +12,8 @@ const getNowPlaying = async (req, res, next) => {
       success: true,
       data: track,
       streamUrl: env.DEFAULT_STREAM_URL,
+      embedUrl: env.LIVE365_EMBED_URL,
+      stationMetadata: live365Service.getStationMetadata(),
       station: env.STATION_NAME
     });
   } catch (err) {

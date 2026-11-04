@@ -72,14 +72,14 @@
 
           <div class="flex items-center gap-4">
             <div class="w-20 h-20 rounded-2xl overflow-hidden border shrink-0 shadow-md" style="background-color: var(--bg-card); border-color: var(--border-color);">
-              <img id="hero-track-art" src="/images/fallback-album.svg" alt="Now Playing Album" class="w-full h-full object-cover">
+              <img id="hero-track-art" src="<%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.artwork ? liveTrack.artwork : '/images/fallback-album.svg' %>" alt="Now Playing Album" class="w-full h-full object-cover">
             </div>
             <div class="min-w-0 flex-1">
               <h3 id="hero-track-title" class="text-lg font-black truncate" style="color: var(--text-primary);">
-                KWIZZ Radio Live
+                <%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.title ? liveTrack.title : 'KWIZZ Radio Live' %>
               </h3>
               <p id="hero-track-artist" class="text-sm font-bold text-amber-500 truncate">
-                Ottawa's Reggae &amp; Dancehall
+                <%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.artist ? liveTrack.artist : "Ottawa's Reggae & Dancehall" %>
               </p>
               <p class="text-xs mt-1" style="color: var(--text-muted);">Live from Studio Ottawa &bull; Internet Radio</p>
             </div>

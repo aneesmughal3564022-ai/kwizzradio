@@ -32,6 +32,8 @@ const configureSecurityHeaders = (app) => {
             "https://cdn.tailwindcss.com",
             "https://challenges.cloudflare.com",
             "https://www.google.com/recaptcha/",
+            "https://live365.com",
+            "https://*.live365.com",
             "https://www.gstatic.com/recaptcha/"
           ],
           styleSrc: [
@@ -45,24 +47,29 @@ const configureSecurityHeaders = (app) => {
             "data:",
             "blob:",
             "https:", // Allow album artwork and external sponsor logos
-            "https://*.live365.com"
+            "https://*.live365.com",
+            "https://*.cdnstream.com"
           ],
           mediaSrc: [
             "'self'",
             "blob:",
             "https://streaming.live365.com",
-            "https://*.live365.com"
+            "https://*.live365.com",
+            "https://*.cdnstream.com"
           ],
           connectSrc: [
             "'self'",
             "https://*.live365.com",
+            "https://*.cdnstream.com",
             "https://streaming.live365.com",
             "https://api.live365.com"
           ],
           frameSrc: [
             "'self'",
             "https://challenges.cloudflare.com",
-            "https://www.google.com/recaptcha/"
+            "https://www.google.com/recaptcha/",
+            "https://live365.com",
+            "https://*.live365.com"
           ],
           objectSrc: ["'none'"],
           upgradeInsecureRequests: isDev ? null : []

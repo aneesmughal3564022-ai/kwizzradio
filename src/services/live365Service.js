@@ -75,6 +75,7 @@ class Live365Service {
     this.currentTrackIndex = 0;
     this.lastTrack = null;
     this.recentTracks = [];
+    this.stationMetadata = null;
     this.isPolling = false;
   }
 
@@ -137,7 +138,7 @@ class Live365Service {
       let track = null;
 
       // In production with a valid station ID, attempt live API query
-      if (env.LIVE365_STATION_ID && env.NODE_ENV === 'production') {
+      if (env.LIVE365_STATION_ID) {
         track = await this.fetchFromLive365Api(env.LIVE365_STATION_ID);
       }
 
@@ -205,12 +206,46 @@ class Live365Service {
           try {
             const json = JSON.parse(data);
             const current = json['current-track'] || json.current_track;
+
+            // Extract real recently played tracks from Live365 history
+            const lastPlayed = json['last-played'] || json.last_played;
+            if (Array.isArray(lastPlayed) && lastPlayed.length > 0) {
+              this.recentTracks = lastPlayed.map(item => ({
+                title: item.title || 'KWIZZ Selection',
+                artist: item.artist || 'KWIZZ Radio',
+                album: item.album || 'Live on Air',
+                artwork: item.art || '/images/fallback-album.svg',
+                playedAt: item.start || new Date().toISOString(),
+                duration: item.duration || 180,
+                appleMusicUrl: item.apple_music_url || null,
+                amazonStoreUrl: item.amazon_store_url || null
+              }));
+              cache.set(CACHE_KEY_RECENT, JSON.stringify(this.recentTracks), 'EX', 120).catch(() => {});
+            }
+
+            // Save full station info if present
+            this.stationMetadata = {
+              name: json.name || env.STATION_NAME,
+              description: json.description || env.STATION_TAGLINE,
+              genres: json.genres || ['Reggae', 'Dancehall'],
+              logo: json['station-logo'] || json.logo || null,
+              cover: json.cover || null,
+              streamUrl: json['stream-url'] || env.DEFAULT_STREAM_URL,
+              embedUrl: env.LIVE365_EMBED_URL || `https://live365.com/embeds/v1/player/${stationId}?s=md&m=dark&c=mp3`,
+              listeners: json.listeners || 0
+            };
             if (current && (current.title || current.artist)) {
               return resolve({
                 title: current.title || 'KWIZZ Reggae Selection',
                 artist: current.artist || 'KWIZZ Radio DJ',
                 album: current.album || 'Ottawa Waves',
-                artwork: current.art || '/images/fallback-album.svg'
+                artwork: current.art || '/images/fallback-album.svg',
+                duration: current.duration || 180,
+                start: current.start || null,
+                end: current.end || null,
+                appleMusicUrl: current.apple_music_url || null,
+                amazonStoreUrl: current.amazon_store_url || null,
+                status: current.status || 'playing'
               });
             }
             resolve(null);
@@ -262,6 +297,14 @@ class Live365Service {
     } catch (e) {}
 
     return this.recentTracks;
+  }
+
+  getStationMetadata() {
+    return this.stationMetadata || {
+      name: env.STATION_NAME,
+      streamUrl: env.DEFAULT_STREAM_URL,
+      embedUrl: env.LIVE365_EMBED_URL
+    };
   }
 
   /**

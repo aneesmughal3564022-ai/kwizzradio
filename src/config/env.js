@@ -16,8 +16,9 @@ const envSchema = z.object({
   STATION_NAME: z.string().default('KWIZZ Radio'),
   STATION_TAGLINE: z.string().default("Ottawa's Premier Reggae & Dancehall Internet Radio"),
   STATION_TIMEZONE: z.string().default('America/Toronto'),
-  DEFAULT_STREAM_URL: z.string().default('https://streaming.live365.com/b72076_128k.mp3'),
-  LIVE365_STATION_ID: z.string().default('a72076'),
+  DEFAULT_STREAM_URL: z.string().default('https://streaming.live365.com/a77724'),
+  LIVE365_STATION_ID: z.string().default('a77724'),
+  LIVE365_EMBED_URL: z.string().default('https://live365.com/embeds/v1/player/a77724?s=md&m=dark&c=mp3'),
 
   DATABASE_URL: z.string().default('postgresql://postgres:postgres@localhost:5432/kwizz_radio?schema=public'),
   REDIS_URL: z.string().default('redis://localhost:6379'),

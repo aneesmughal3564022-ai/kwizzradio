@@ -21,7 +21,7 @@
     <div class="relative z-10 flex flex-col items-center">
       <!-- Vinyl / Artwork Showcase -->
       <div class="relative w-48 h-48 sm:w-64 sm:h-64 rounded-2xl overflow-hidden shadow-2xl border-2 mb-6 group" style="background-color: var(--bg-card); border-color: var(--border-color);">
-        <img id="listen-page-art" src="/images/fallback-album.svg" alt="Now Playing Track Artwork" class="w-full h-full object-cover">
+        <img id="listen-page-art" src="<%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.artwork ? liveTrack.artwork : '/images/fallback-album.svg' %>" alt="Now Playing Track Artwork" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-xs">
           <button onclick="if(window.player) window.player.toggle()" class="w-16 h-16 rounded-full btn-primary-gold flex items-center justify-center shadow-xl transform hover:scale-110 active:scale-95 transition-transform cursor-pointer" aria-label="Toggle Playback">
             <svg class="w-8 h-8 fill-current translate-x-0.5 text-zinc-950" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -30,10 +30,10 @@
       </div>
 
       <h2 id="listen-page-title" class="text-2xl sm:text-3xl font-black truncate max-w-lg mb-1" style="color: var(--text-primary);">
-        KWIZZ Radio Live
+        <%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.title ? liveTrack.title : 'KWIZZ Radio Live' %>
       </h2>
       <p id="listen-page-artist" class="text-base sm:text-lg font-bold text-amber-500 truncate max-w-lg mb-6">
-        Ottawa's Reggae &amp; Dancehall &bull; Worldwide Stream
+        <%= typeof liveTrack !== 'undefined' && liveTrack && liveTrack.artist ? liveTrack.artist : "Ottawa's Reggae & Dancehall • Worldwide Stream" %>
       </p>
 
       <!-- Big Play Button for 1-Click Launch -->
@@ -41,6 +41,31 @@
         <svg class="w-6 h-6 fill-current text-zinc-950" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         <span class="text-zinc-950 font-black">Play Live Stream</span>
       </button>
+    </div>
+  </div>
+
+  <!-- Live365 Official Embedded Player -->
+  <div class="rounded-3xl kwizz-card p-6 sm:p-8 shadow-xl space-y-4" style="background-color: var(--bg-card); border-color: var(--border-color);">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+        <h3 class="text-sm font-bold uppercase tracking-wider" style="color: var(--text-primary);">
+          Official Live365 Player Widget
+        </h3>
+      </div>
+      <a href="https://live365.com/station/KWIZZ-RADIO-a77724" target="_blank" rel="noopener noreferrer" class="text-xs text-amber-500 hover:underline flex items-center gap-1 font-semibold">
+        <span>Station on Live365</span> &nearr;
+      </a>
+    </div>
+    <div class="w-full overflow-hidden rounded-2xl border bg-black/40" style="border-color: var(--border-color);">
+      <iframe 
+        src="<%= typeof embedUrl !== 'undefined' ? embedUrl : 'https://live365.com/embeds/v1/player/a77724?s=md&m=dark&c=mp3' %>" 
+        title="KWIZZ Radio Official Live365 Player"
+        width="100%" 
+        height="145" 
+        style="border: none; overflow: hidden; display: block;" 
+        allow="autoplay">
+      </iframe>
     </div>
   </div>
 
@@ -55,15 +80,27 @@
     </div>
 
     <ul id="recent-tracks-list" class="space-y-2">
-      <!-- Populated via sse-client.js and initial fetch -->
-      <li class="flex items-center gap-3 p-3 rounded-xl border" style="background-color: var(--bg-card); border-color: var(--border-color);">
-        <img src="/images/fallback-album.svg" alt="Track" class="w-10 h-10 rounded-lg object-cover" style="background-color: var(--button-secondary-bg);">
-        <div class="min-w-0 flex-1">
-          <h4 class="text-xs font-bold truncate" style="color: var(--text-primary);">Could You Be Loved</h4>
-          <p class="text-[11px] truncate" style="color: var(--text-secondary);">Bob Marley &amp; The Wailers</p>
-        </div>
-        <span class="text-[10px]" style="color: var(--text-muted);">Earlier</span>
-      </li>
+      <% if (typeof recentTracks !== 'undefined' && Array.isArray(recentTracks) && recentTracks.length > 0) { %>
+        <% recentTracks.forEach(track => { %>
+          <li class="flex items-center gap-3 p-3 rounded-xl border transition-all" style="background-color: var(--bg-card); border-color: var(--border-color);">
+            <img src="<%= track.artwork || '/images/fallback-album.svg' %>" alt="<%= track.title %>" class="w-10 h-10 rounded-lg object-cover" style="background-color: var(--button-secondary-bg);" onerror="this.src='/images/fallback-album.svg'">
+            <div class="min-w-0 flex-1">
+              <h4 class="text-xs font-bold truncate" style="color: var(--text-primary);"><%= track.title %></h4>
+              <p class="text-[11px] truncate" style="color: var(--text-secondary);"><%= track.artist %></p>
+            </div>
+            <span class="text-[10px]" style="color: var(--text-muted);">Played</span>
+          </li>
+        <% }) %>
+      <% } else { %>
+        <li class="flex items-center gap-3 p-3 rounded-xl border" style="background-color: var(--bg-card); border-color: var(--border-color);">
+          <img src="/images/fallback-album.svg" alt="Track" class="w-10 h-10 rounded-lg object-cover" style="background-color: var(--button-secondary-bg);">
+          <div class="min-w-0 flex-1">
+            <h4 class="text-xs font-bold truncate" style="color: var(--text-primary);">KWIZZ Radio Live</h4>
+            <p class="text-[11px] truncate" style="color: var(--text-secondary);">Ottawa Reggae &amp; Dancehall</p>
+          </div>
+          <span class="text-[10px]" style="color: var(--text-muted);">Live</span>
+        </li>
+      <% } %>
     </ul>
   </div>
 </div>
@@ -82,6 +119,21 @@
       }
     }
     sync();
+    // Fetch live now playing data from Live365
+    fetch('/api/now-playing')
+      .then(r => r.json())
+      .then(res => {
+        if (res.success && res.data) {
+          const titleEl = document.getElementById('listen-page-title');
+          const artistEl = document.getElementById('listen-page-artist');
+          const artEl = document.getElementById('listen-page-art');
+          if (titleEl) titleEl.textContent = res.data.title || 'KWIZZ Radio Live';
+          if (artistEl) artistEl.textContent = res.data.artist || 'Ottawa Reggae & Dancehall';
+          if (artEl && res.data.artwork) artEl.src = res.data.artwork;
+          if (window.player) window.player.updateMetadata(res.data);
+        }
+      })
+      .catch(() => {});
     // Fetch initial recent tracks
     fetch('/api/recent')
       .then(r => r.json())

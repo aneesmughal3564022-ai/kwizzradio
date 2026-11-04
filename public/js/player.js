@@ -11,7 +11,7 @@
       this.audio = document.getElementById('kwizz-audio-element');
       if (!this.audio) return;
 
-      this.streamUrl = this.audio.getAttribute('data-stream-url') || 'https://streaming.live365.com/b72076_128k.mp3';
+      this.streamUrl = this.audio.getAttribute('data-stream-url') || 'https://streaming.live365.com/a77724';
       this.state = 'IDLE'; // IDLE, CONNECTING, LIVE, RECONNECTING, OFFLINE, PAUSED
       this.retryCount = 0;
       this.retryTimer = null;
